@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prince | Spatial Data Science & Earth Observation Researcher</title>
+  <meta name="description" content="Official academic portfolio of Prince: Quantitative Geographer, Spatial Systems Architect, and Earth Observation Researcher specializing in satellite telemetry, AHP hazard modeling, and AI geospatial systems.">
+  <link rel="canonical" href="https://www.princesite.in/">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Newsreader"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            earth: {
+              50: '#f4f7f4',
+              100: '#e5ede6',
+              200: '#cdddc0',
+              300: '#a7c494',
+              400: '#7fa56a',
+              500: '#5e8748',
+              600: '#476b36',
+              700: '#38552c',
+              800: '#2e4425',
+              900: '#1e3019',
+              950: '#0e1a0b',
+            },
+            topo: {
+              cream: '#FAF9F6',
+              paper: '#F5F4F0',
+              border: '#E8E6DF',
+              dark: '#1C1E1B',
+              muted: '#636A60',
+              accent: '#2B593F',
+              cyan: '#0C7489',
+              amber: '#B4651E',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet CSS & JS for Interactive Research Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <style>
+    /* Custom refined styling */
+    body {
+      background-color: #FAFAF7;
+      color: #1F2421;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    /* Subtle Cartographic Grid Pattern */
+    .bg-carto-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+    }
+
+    .bg-contour-pattern {
+      background-image: radial-gradient(rgba(43, 89, 63, 0.07) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Custom range slider styling for AHP simulator */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #E5E7EB;
+      border-radius: 9999px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2B593F;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F4F4F0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4D2C9;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #A3A196;
+    }
+
+    /* Leaflet popup styling */
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      border: 1px solid #E5E7EB;
+      padding: 4px;
+    }
+    .leaflet-popup-tip {
+      background: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="selection:bg-earth-200 selection:text-earth-900 font-sans antialiased text-stone-800">
+
+  <!-- TOP TELEMETRY HUD BAR -->
+  <header class="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 text-xs text-stone-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-9">
+        <!-- Live Coordinate & Orbit Status -->
+        <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap py-1">
+          <span class="inline-flex items-center gap-1.5 font-mono text-[11px] text-emerald-800 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            EO STATION : ACTIVE
+          </span>
+          <span class="text-stone-300">|</span>
+          <span class="font-mono text-[11px] text-stone-600 hidden sm:inline" id="hud-coords">
+            LAT 30.2858° N • LON 78.9822° E (RUDRAPRAYAG MASTURA)
+          </span>
+          <span class="text-stone-300 hidden md:inline">|</span>
+          <span class="font-mono text-[11px] text-stone-500 hidden md:inline">
+            COPERNICUS DEM GLO-30 • SENTINEL-1 SAR
+          </span>
+        </div>
+
+        <!-- Clock & Fast Links -->
+        <div class="flex items-center gap-4 font-mono text-[11px]">
+          <span class="text-stone-500" id="live-clock">12:00:00 UTC</span>
+          <span class="text-stone-300">|</span>
+          <a href="https://orcid.org/0009-0008-5483-2837" target="_blank" rel="noopener" class="text-emerald-700 hover:text-emerald-900 font-medium flex items-center gap-1">
+            <span>ORCID</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION -->
+  <nav class="border-b border-stone-200/70 bg-white/95 backdrop-blur-md sticky top-9 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand / Logo -->
+        <a href="#home" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-stone-900 text-white flex items-center justify-center font-bold text-lg tracking-wider shadow-sm group-hover:bg-emerald-800 transition-colors">
+            P
+          </div>
+          <div>
+            <div class="font-bold text-base tracking-tight text-stone-900 flex items-center gap-2">
+              <span>PRINCE</span>
+              <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">DU Researcher</span>
+            </div>
+            <div class="text-[11px] text-stone-500 font-mono tracking-tight">Spatial Data Science & Earth Observation</div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+          <a href="#empirical-research" class="hover:text-emerald-800 transition-colors">Publications & Research</a>
+          <a href="#systems" class="hover:text-emerald-800 transition-colors">Systems & AI</a>
+          <a href="#ahp-simulator" class="hover:text-emerald-800 transition-colors flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            AHP Simulator
+          </a>
+          <a href="#fieldwork-map" class="hover:text-emerald-800 transition-colors">Expeditions Map</a>
+          <a href="#consulting" class="hover:text-emerald-800 transition-colors">Consulting</a>
+          <a href="#skills" class="hover:text-emerald-800 transition-colors">Skills</a>
+          <a href="#contact" class="hover:text-emerald-800 transition-colors">Contact</a>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="flex items-center gap-2.5">
+          <a href="assets/docs/Prince_Academic_CV_2026.pdf" download="Prince_Academic_CV_2026.pdf" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300/80 transition-all shadow-sm">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Curriculum Vitae</span>
+          </a>
+          <a href="#contact" class="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white shadow-sm transition-all">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Connect</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="relative overflow-hidden pt-12 pb-20 border-b border-stone-200/80 bg-gradient-to-b from-stone-50 via-white to-stone-50">
+    <!-- Generative Topographic Canvas Background -->
+    <canvas id="topo-canvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40"></canvas>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <!-- Left Column: Biography & Narrative -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Status Tag -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-stone-200 shadow-sm text-xs text-stone-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            <span class="font-medium">University of Delhi • Dept of Geography</span>
+            <span class="text-stone-300">•</span>
+            <span class="text-stone-500 font-mono">First Class Standing</span>
+          </div>
+
+          <!-- Main Heading -->
+          <div class="space-y-2">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-stone-900 font-sans leading-[1.1]">
+              Bridging Physical Geography with <span class="text-emerald-800 underline decoration-emerald-300 decoration-wavy decoration-2 underline-offset-4">Spatial Intelligence</span>.
+            </h1>
+            <p class="text-lg sm:text-xl text-stone-600 font-normal leading-relaxed pt-2">
+              Quantitative geographer and spatial systems architect formulating multi-criteria analytical frameworks, processing satellite telemetry, and synthesizing edge AI systems to model climate vulnerability and terrain resilience.
+            </p>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-sm">
+              <div class="text-2xl font-bold font-mono text-stone-900">3,419</div>
+              <div class="text-[11px] font-medium text-stone-500 uppercase tracking-wider mt-0.5">Villages Modeled (NH-7)</div>
+            </div>
+            <div class="p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-sm">
+              <div class="text-2xl font-bold font-mono text-emerald-800">10.5281</div>
+              <div class="text-[11px] font-medium text-stone-500 uppercase tracking-wider mt-0.5">Zenodo Citable DOI</div>
+            </div>
+            <div class="p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-sm">
+              <div class="text-2xl font-bold font-mono text-stone-900">20+</div>
+              <div class="text-[11px] font-medium text-stone-500 uppercase tracking-wider mt-0.5">MCDM Solar Layers</div>
+            </div>
+            <div class="p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-sm">
+              <div class="text-2xl font-bold font-mono text-stone-900">FP16</div>
+              <div class="text-[11px] font-medium text-stone-500 uppercase tracking-wider mt-0.5">Edge Vision AI (CamAI)</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#empirical-research" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-sm shadow-md transition-all hover:scale-[1.01]">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              <span>Explore Empirical Research</span>
+            </a>
+            <a href="#ahp-simulator" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-stone-50 text-stone-800 font-semibold text-sm border border-stone-300 shadow-sm transition-all">
+              <i data-lucide="sliders" class="w-4 h-4 text-emerald-700"></i>
+              <span>Launch AHP Simulator</span>
+            </a>
+            <a href="https://camai.princesite.in" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium text-sm transition-all">
+              <i data-lucide="video" class="w-4 h-4 text-stone-600"></i>
+              <span>CamAI Live</span>
+              <i data-lucide="external-link" class="w-3 h-3 text-stone-400"></i>
+            </a>
+          </div>
+
+          <!-- Quick Metadata Bar -->
+          <div class="pt-4 border-t border-stone-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-stone-500">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="mail" class="w-3.5 h-3.5 text-stone-400"></i>
+              <button onclick="copyToClipboard('official.princesuthar@gmail.com', 'Email copied!')" class="hover:text-stone-900 font-mono text-left underline decoration-dotted">
+                official.princesuthar@gmail.com
+              </button>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-stone-400"></i>
+              <button onclick="copyToClipboard('+919509706699', 'Phone copied!')" class="hover:text-stone-900 font-mono underline decoration-dotted">
+                +91-9509706699
+              </button>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-stone-400"></i>
+              <span>New Delhi / Remote</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Research Telemetry HUD Widget -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-2xl border border-stone-200 shadow-xl overflow-hidden">
+            <!-- Terminal Header -->
+            <div class="bg-stone-900 px-4 py-3 text-white flex items-center justify-between border-b border-stone-800">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="font-mono text-xs text-stone-300 ml-2 font-medium">GEOSPATIAL_TELEMETRY.HUD</span>
+              </div>
+              <span class="font-mono text-[10px] text-emerald-400 uppercase tracking-widest px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800">TELEMETRY LOCK</span>
+            </div>
+
+            <!-- Active Target Selector -->
+            <div class="p-4 bg-stone-50 border-b border-stone-200 text-xs">
+              <label class="block text-[11px] font-semibold uppercase text-stone-500 mb-2">Select Active Observation Corridor</label>
+              <div class="grid grid-cols-2 gap-1.5" id="target-selector">
+                <button onclick="switchTarget('rudraprayag')" id="btn-rudraprayag" class="px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-emerald-700 text-emerald-900 font-semibold shadow-xs">
+                  <div class="font-mono text-[10px] text-emerald-700">TARGET 01</div>
+                  <div class="font-bold">NH-7 Rudraprayag</div>
+                </button>
+                <button onclick="switchTarget('gepang')" id="btn-gepang" class="px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-stone-200 text-stone-700 hover:border-stone-300">
+                  <div class="font-mono text-[10px] text-stone-400">TARGET 02</div>
+                  <div class="font-bold">Gepang Gath Lake</div>
+                </button>
+                <button onclick="switchTarget('solar')" id="btn-solar" class="px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-stone-200 text-stone-700 hover:border-stone-300">
+                  <div class="font-mono text-[10px] text-stone-400">TARGET 03</div>
+                  <div class="font-bold">Coal Mine Solar Siting</div>
+                </button>
+                <button onclick="switchTarget('du')" id="btn-du" class="px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-stone-200 text-stone-700 hover:border-stone-300">
+                  <div class="font-mono text-[10px] text-stone-400">TARGET 04</div>
+                  <div class="font-bold">DU Geography Lab</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic Data Display -->
+            <div class="p-5 space-y-4" id="hud-content">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="font-bold text-stone-900 text-base" id="target-title">NH-7 Himalayan Arterial Transport Corridor</h3>
+                  <p class="text-xs text-stone-500" id="target-desc">Mastura Landslide Zone & Village Isolation Gravity Model</p>
+                </div>
+                <span class="font-mono text-xs font-semibold px-2 py-1 rounded bg-amber-50 text-amber-800 border border-amber-200" id="target-tag">AHP HAZARD</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-100">
+                  <div class="text-[10px] text-stone-400 uppercase font-mono">Geographic Fix</div>
+                  <div class="font-mono font-semibold text-stone-800 text-[11px] mt-0.5" id="target-fix">30.2858° N, 78.9822° E</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-100">
+                  <div class="text-[10px] text-stone-400 uppercase font-mono">Elevation Relief</div>
+                  <div class="font-mono font-semibold text-stone-800 text-[11px] mt-0.5" id="target-elev">895 m – 3,120 m (GLO-30)</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-100">
+                  <div class="text-[10px] text-stone-400 uppercase font-mono">Primary Telemetry</div>
+                  <div class="font-mono font-semibold text-stone-800 text-[11px] mt-0.5" id="target-sensor">ESA Copernicus + OSM</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-100">
+                  <div class="text-[10px] text-stone-400 uppercase font-mono">Empirical Output</div>
+                  <div class="font-mono font-semibold text-emerald-800 text-[11px] mt-0.5" id="target-metric">3,419 Villages Analyzed</div>
+                </div>
+              </div>
+
+              <!-- Mini Progress / Hazard Bar -->
+              <div class="space-y-1.5 pt-1">
+                <div class="flex justify-between text-[11px]">
+                  <span class="text-stone-500 font-medium" id="meter-label">Calculated Vulnerability Weight</span>
+                  <span class="font-mono font-bold text-stone-800" id="meter-val">87.1% (High Exposure)</span>
+                </div>
+                <div class="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                  <div class="bg-gradient-to-r from-emerald-600 via-amber-500 to-rose-600 h-full rounded-full transition-all duration-500" id="meter-bar" style="width: 87%"></div>
+                </div>
+              </div>
+
+              <!-- Action Link -->
+              <div class="pt-2">
+                <a href="#empirical-research" id="target-action" class="w-full py-2 px-3 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                  <span>View Citable Research Paper & Zenodo Dataset</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="px-5 py-2.5 bg-stone-100/70 border-t border-stone-200 flex items-center justify-between text-[11px] text-stone-500">
+              <span class="flex items-center gap-1 font-mono">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-700"></i>
+                <span>Open Science & Peer Verification</span>
+              </span>
+              <span class="font-mono text-stone-400">v2026.10</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EMPIRICAL RESEARCH & PUBLICATIONS -->
+  <section id="empirical-research" class="py-20 border-b border-stone-200/80 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-mono text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="microscope" class="w-3.5 h-3.5"></i>
+          <span>Scholarly Output & Empirical Fieldwork</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          Publications, Dissertations & Peer-Reviewed Research
+        </h2>
+        <p class="text-stone-600 text-base leading-relaxed">
+          Rigorous geospatial inquiry integrating satellite remote sensing, multi-criteria decision mathematics, and physical ground-truthing to solve critical disaster and infrastructure challenges.
+        </p>
+      </div>
+
+      <!-- RESEARCH PAPER 1: NH-7 HIMALAYAN CORRIDOR -->
+      <div class="bg-gradient-to-br from-white via-stone-50/50 to-emerald-50/20 rounded-2xl border border-stone-200/90 shadow-md p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+          <div class="space-y-2 max-w-4xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-900 font-mono text-xs font-bold border border-emerald-300">
+                Zenodo DOI: 10.5281/zenodo.23670659
+              </span>
+              <span class="px-2.5 py-1 rounded-md bg-amber-100 text-amber-900 font-mono text-xs font-bold border border-amber-300 flex items-center gap-1">
+                <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                Esri India User Conference 2026 Selection
+              </span>
+              <span class="text-xs text-stone-500 font-mono">Published Sept 2026</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+              Community Isolation Risk along the NH-7 Himalayan Transport Corridor
+            </h3>
+            <p class="text-sm font-medium text-stone-600">
+              <strong class="text-stone-900">Prince</strong> (Lead Spatial Researcher) • Department of Geography, University of Delhi • Uttarakhand, India
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2 self-start">
+            <a href="https://doi.org/10.5281/zenodo.23670659" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold shadow-xs transition-colors">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <span>Zenodo Citable Record</span>
+            </a>
+            <a href="assets/docs/NH7_Himalayan_Isolation_Risk_Assessment.pdf" download="NH7_Himalayan_Isolation_Risk_Assessment_Prince.pdf" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold transition-colors">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>Download PDF Paper</span>
+            </a>
+            <button onclick="openBibtexModal('nh7')" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 text-xs font-medium transition-colors">
+              <i data-lucide="quote" class="w-3.5 h-3.5 text-stone-500"></i>
+              <span>Cite BibTeX</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-sm text-stone-700 leading-relaxed">
+          Formulated a spatial gravity model evaluating village accessibility exposure across <strong>3,419 rural settlements</strong> along the NH-7 arterial corridor within a 15 km buffer. Integrated ESA Copernicus GLO-30 DEM (slope gradient and elevation), OpenStreetMap friction surfaces, and Census demographics using an Analytic Hierarchy Process (AHP) multi-criteria framework:
+        </p>
+
+        <!-- AHP Parameter Breakdown Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-1">
+          <div class="p-3 bg-white rounded-xl border border-stone-200">
+            <div class="text-xs text-stone-500 uppercase font-mono">Road Access</div>
+            <div class="text-xl font-bold font-mono text-emerald-800 mt-0.5">46.91%</div>
+            <div class="text-[11px] text-stone-400">Primary Friction Weight</div>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-stone-200">
+            <div class="text-xs text-stone-500 uppercase font-mono">Healthcare</div>
+            <div class="text-xl font-bold font-mono text-stone-800 mt-0.5">20.10%</div>
+            <div class="text-[11px] text-stone-400">Critical Proximity</div>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-stone-200">
+            <div class="text-xs text-stone-500 uppercase font-mono">NH-7 Proximity</div>
+            <div class="text-xl font-bold font-mono text-stone-800 mt-0.5">20.10%</div>
+            <div class="text-[11px] text-stone-400">Arterial Lifeline</div>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-stone-200">
+            <div class="text-xs text-stone-500 uppercase font-mono">Slope Gradient</div>
+            <div class="text-xl font-bold font-mono text-stone-800 mt-0.5">8.62%</div>
+            <div class="text-[11px] text-stone-400">Terrain Obstacle</div>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-stone-200">
+            <div class="text-xs text-stone-500 uppercase font-mono">Elevation</div>
+            <div class="text-xl font-bold font-mono text-stone-800 mt-0.5">4.27%</div>
+            <div class="text-[11px] text-stone-400">Orographic Factor</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-stone-100/80 border border-stone-200 text-xs text-stone-700 flex items-start gap-3">
+          <i data-lucide="map" class="w-5 h-5 text-emerald-800 shrink-0 mt-0.5"></i>
+          <div>
+            <strong class="font-semibold text-stone-900">In-Situ Hazard Ground-Truthing in Rudraprayag:</strong>
+            Conducted direct field surveys along the Mastura landslide corridor to validate friction surface resistance values and verify vulnerable cut-off points against satellite observations. Full open-access citable dataset published on CERN/Zenodo.
+          </div>
+        </div>
+      </div>
+
+      <!-- RESEARCH PAPER 2: NEPAL GLOF DISSERTATION -->
+      <div class="bg-gradient-to-br from-white via-stone-50/50 to-cyan-50/20 rounded-2xl border border-stone-200/90 shadow-md p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+          <div class="space-y-2 max-w-4xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-1 rounded-md bg-cyan-100 text-cyan-900 font-mono text-xs font-bold border border-cyan-300">
+                Ongoing Undergraduate Dissertation
+              </span>
+              <span class="px-2.5 py-1 rounded-md bg-stone-100 text-stone-800 font-mono text-xs font-semibold border border-stone-300">
+                Nepal Himalayas & Himachal Catchments
+              </span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+              Glacial Lake Outburst Flood (GLOF) Early Warning & AI Dynamics
+            </h3>
+            <p class="text-sm font-medium text-stone-600">
+              <strong class="text-stone-900">Prince</strong> • Advising Faculty: Department of Geography, University of Delhi
+            </p>
+          </div>
+
+          <!-- Status badge -->
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200 text-xs font-semibold self-start">
+            <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+            Active Multi-Temporal Pipeline
+          </span>
+        </div>
+
+        <p class="text-sm text-stone-700 leading-relaxed">
+          Architecting an Earth Observation monitoring pipeline combining <strong>Sentinel-1 SAR backscatter</strong> (VV/VH polarizations) and <strong>Sentinel-2 multispectral imagery</strong> (NDWI/MNDWI indices) to track moraine-dammed glacial lake expansion in high-altitude catchments. Implementing deep learning segmentation to detect lake boundary fluctuations and predict sudden outburst flood risk.
+        </p>
+
+        <!-- Scientific Figures Gallery from Dissertation -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-stone-500 font-mono flex items-center gap-1.5">
+              <i data-lucide="image" class="w-3.5 h-3.5"></i>
+              Empirical Results & Computational Simulation Outputs
+            </span>
+            <span class="text-xs text-stone-400 font-mono">Click figure to enlarge</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Figure 1 -->
+            <div onclick="openLightbox('assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png', 'Figure 4.1: Gepang Gath 3D Lake Volume & Elevation Growth Simulation')" class="group cursor-pointer rounded-xl overflow-hidden border border-stone-200 bg-white hover:border-emerald-600 transition-all shadow-sm">
+              <div class="h-40 overflow-hidden bg-stone-100">
+                <img src="assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png" alt="Figure 4.1 Gepang Gath 3D Growth" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="p-3">
+                <div class="font-mono text-[10px] text-emerald-800 font-bold uppercase">Figure 4.1</div>
+                <div class="text-xs font-semibold text-stone-800 line-clamp-1">Gepang Gath 3D Volume Growth</div>
+                <div class="text-[11px] text-stone-500 mt-0.5">Bathymetric expansion modeling</div>
+              </div>
+            </div>
+
+            <!-- Figure 2 -->
+            <div onclick="openLightbox('assets/images/Figure_4_2_Flood_Routing_Arrival_Times.png', 'Figure 4.2: Flood Wave Routing Arrival Times & Peak Hydrograph Downstream')" class="group cursor-pointer rounded-xl overflow-hidden border border-stone-200 bg-white hover:border-emerald-600 transition-all shadow-sm">
+              <div class="h-40 overflow-hidden bg-stone-100">
+                <img src="assets/images/Figure_4_2_Flood_Routing_Arrival_Times.png" alt="Figure 4.2 Flood Wave Arrival Times" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="p-3">
+                <div class="font-mono text-[10px] text-emerald-800 font-bold uppercase">Figure 4.2</div>
+                <div class="text-xs font-semibold text-stone-800 line-clamp-1">Flood Routing Arrival Times</div>
+                <div class="text-[11px] text-stone-500 mt-0.5">HEC-RAS hydraulic attenuation</div>
+              </div>
+            </div>
+
+            <!-- Figure 3 -->
+            <div onclick="openLightbox('assets/images/Figure_4_5_AI_Lake_Detection_Inference.png', 'Figure 4.5: Deep Learning U-Net Glacial Lake Segmentation Inference & Confidence Map')" class="group cursor-pointer rounded-xl overflow-hidden border border-stone-200 bg-white hover:border-emerald-600 transition-all shadow-sm">
+              <div class="h-40 overflow-hidden bg-stone-100">
+                <img src="assets/images/Figure_4_5_AI_Lake_Detection_Inference.png" alt="Figure 4.5 AI Lake Detection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="p-3">
+                <div class="font-mono text-[10px] text-emerald-800 font-bold uppercase">Figure 4.5</div>
+                <div class="text-xs font-semibold text-stone-800 line-clamp-1">AI Boundary Segmentation</div>
+                <div class="text-[11px] text-stone-500 mt-0.5">U-Net deep learning inference</div>
+              </div>
+            </div>
+
+            <!-- Figure 4 -->
+            <div onclick="openLightbox('assets/images/Figure_4_7_ROC_Curves_Glacial_Lakes.png', 'Figure 4.7: Multi-Model Machine Learning ROC Curves & AUC Metric Validation')" class="group cursor-pointer rounded-xl overflow-hidden border border-stone-200 bg-white hover:border-emerald-600 transition-all shadow-sm">
+              <div class="h-40 overflow-hidden bg-stone-100">
+                <img src="assets/images/Figure_4_7_ROC_Curves_Glacial_Lakes.png" alt="Figure 4.7 ROC Curves" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <div class="p-3">
+                <div class="font-mono text-[10px] text-emerald-800 font-bold uppercase">Figure 4.7</div>
+                <div class="text-xs font-semibold text-stone-800 line-clamp-1">ROC Validation Curves</div>
+                <div class="text-[11px] text-stone-500 mt-0.5">Empirical model precision/recall</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE AHP MULTI-CRITERIA SIMULATOR (UNIQUE TOOL) -->
+  <section id="ahp-simulator" class="py-20 border-b border-stone-200/80 bg-stone-50/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-900 text-white font-mono text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Interactive Computational Model</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          AHP Himalayan Isolation Hazard Simulator
+        </h2>
+        <p class="text-stone-600 text-sm leading-relaxed">
+          Test Prince's Analytic Hierarchy Process (AHP) multi-criteria matrix live. Adjust weights below to evaluate how parameter shifts alter the calculated Community Isolation Index (CII) and vulnerability categorization.
+        </p>
+      </div>
+
+      <!-- Simulator Card -->
+      <div class="bg-white rounded-2xl border border-stone-200 shadow-lg p-6 sm:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Sliders Left Column (7 cols) -->
+          <div class="lg:col-span-7 space-y-5">
+            <div class="flex items-center justify-between pb-2 border-b border-stone-200">
+              <span class="text-xs font-bold uppercase font-mono text-stone-700">AHP Evaluation Parameters</span>
+              <button onclick="resetAHPWeights()" class="text-xs text-emerald-800 hover:text-emerald-900 font-mono font-medium flex items-center gap-1">
+                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                <span>Reset to Prince's Published Weights</span>
+              </button>
+            </div>
+
+            <!-- Slider 1: Road Access -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-stone-800">1. Road Network Friction / Distance</span>
+                <span class="font-mono font-bold text-emerald-800" id="val-road">46.91%</span>
+              </div>
+              <input type="range" id="slider-road" min="5" max="80" step="0.1" value="46.91" oninput="updateAHPCalculator()">
+              <div class="text-[11px] text-stone-400 flex justify-between">
+                <span>OSM secondary/tertiary roads</span>
+                <span>Published baseline: 46.91%</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Healthcare Access -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-stone-800">2. Emergency Healthcare Proximity</span>
+                <span class="font-mono font-bold text-stone-800" id="val-health">20.10%</span>
+              </div>
+              <input type="range" id="slider-health" min="5" max="60" step="0.1" value="20.10" oninput="updateAHPCalculator()">
+              <div class="text-[11px] text-stone-400 flex justify-between">
+                <span>CHC / PHC facility travel isochrones</span>
+                <span>Published baseline: 20.10%</span>
+              </div>
+            </div>
+
+            <!-- Slider 3: NH-7 Proximity -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-stone-800">3. NH-7 National Highway Proximity</span>
+                <span class="font-mono font-bold text-stone-800" id="val-nh7">20.10%</span>
+              </div>
+              <input type="range" id="slider-nh7" min="5" max="60" step="0.1" value="20.10" oninput="updateAHPCalculator()">
+              <div class="text-[11px] text-stone-400 flex justify-between">
+                <span>Arterial evacuation & transport spine</span>
+                <span>Published baseline: 20.10%</span>
+              </div>
+            </div>
+
+            <!-- Slider 4: Slope Gradient -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-stone-800">4. Slope Gradient Steepness</span>
+                <span class="font-mono font-bold text-stone-800" id="val-slope">8.62%</span>
+              </div>
+              <input type="range" id="slider-slope" min="1" max="40" step="0.1" value="8.62" oninput="updateAHPCalculator()">
+              <div class="text-[11px] text-stone-400 flex justify-between">
+                <span>Copernicus GLO-30 derived slope</span>
+                <span>Published baseline: 8.62%</span>
+              </div>
+            </div>
+
+            <!-- Slider 5: Elevation -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-stone-800">5. Absolute Elevation</span>
+                <span class="font-mono font-bold text-stone-800" id="val-elev">4.27%</span>
+              </div>
+              <input type="range" id="slider-elev" min="1" max="30" step="0.1" value="4.27" oninput="updateAHPCalculator()">
+              <div class="text-[11px] text-stone-400 flex justify-between">
+                <span>Orographic barrier effect</span>
+                <span>Published baseline: 4.27%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Output Right Column (5 cols) -->
+          <div class="lg:col-span-5 bg-stone-50 rounded-xl p-6 border border-stone-200 space-y-6">
+            <div>
+              <div class="text-xs font-mono uppercase text-stone-500 font-semibold">Simulated Vulnerability Output</div>
+              <h4 class="text-xl font-bold text-stone-900 mt-1">Community Isolation Index</h4>
+            </div>
+
+            <!-- Large Score Dial / Metric -->
+            <div class="text-center py-4 bg-white rounded-xl border border-stone-200 shadow-xs">
+              <div class="text-5xl font-extrabold font-mono text-stone-900" id="ahp-score">0.742</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-700 mt-1.5 flex items-center justify-center gap-1" id="ahp-tier-badge">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span id="ahp-tier">High Vulnerability Corridor</span>
+              </div>
+              <div class="text-[11px] text-stone-400 mt-1 font-mono">Simulated for Mastura Sector (Rudraprayag)</div>
+            </div>
+
+            <!-- Projected Affected Demographics -->
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between text-stone-600">
+                <span>Total Corridor Settlements:</span>
+                <span class="font-mono font-bold text-stone-800">3,419 Villages</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>High / Severe Isolation Tier:</span>
+                <span class="font-mono font-bold text-rose-700" id="ahp-high-count">1,842 Villages (53.9%)</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>Mean Emergency Response Lag:</span>
+                <span class="font-mono font-bold text-stone-800" id="ahp-time-lag">4.8 Hours</span>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-stone-200">
+              <div class="text-[11px] text-stone-500 leading-normal">
+                <strong class="text-stone-700">Scientific Methodology:</strong> Weights reflect pairwise comparison matrix consistency ratio (CR &lt; 0.10) verified using Saaty's analytic hierarchy procedure.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE FIELDWORK & EXPEDITIONS MAP -->
+  <section id="fieldwork-map" class="py-20 border-b border-stone-200/80 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="max-w-3xl space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-mono text-xs font-semibold uppercase tracking-wider">
+            <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+            <span>Spatial Footprint</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+            Field Expeditions, Ground-Truthing & Research Bases
+          </h2>
+          <p class="text-stone-600 text-sm leading-relaxed">
+            From the steep scree slopes of Rudraprayag to the arid dunes of Jaisalmer and glacial catchments in Nepal: explore Prince's in-situ field research and spatial consulting deployments.
+          </p>
+        </div>
+
+        <div class="text-xs font-mono text-stone-500 bg-stone-100 px-3 py-2 rounded-lg border border-stone-200 self-start">
+          Interactive Map • 7 Key Spatial Stations
+        </div>
+      </div>
+
+      <!-- Map Container with Side Panel -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Interactive Leaflet Map (8 cols) -->
+        <div class="lg:col-span-8 rounded-2xl overflow-hidden border border-stone-300 shadow-md relative h-[480px]">
+          <div id="leaflet-map" class="w-full h-full"></div>
+        </div>
+
+        <!-- Selected Location Details Panel (4 cols) -->
+        <div class="lg:col-span-4 bg-stone-50 rounded-2xl border border-stone-200 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-emerald-800 uppercase" id="map-point-id">STATION 01</span>
+              <span class="text-xs font-mono text-stone-500" id="map-point-date">Sept 2026</span>
+            </div>
+            <h3 class="text-xl font-bold text-stone-900" id="map-point-title">Rudraprayag Hazard Ground-Truthing</h3>
+            <p class="text-xs font-mono text-emerald-900 bg-emerald-100/80 px-2 py-1 rounded w-fit" id="map-point-coords">30.2858° N, 78.9822° E</p>
+            <p class="text-xs text-stone-600 leading-relaxed" id="map-point-desc">
+              Himalayan Landslide Mitigation along the NH-7 hazard corridor. Administered in-situ GPS spatial sampling and field assessments in Mastura to map road disruption exposure.
+            </p>
+            <div class="pt-2 border-t border-stone-200">
+              <div class="text-[11px] font-semibold uppercase text-stone-500 font-mono">Key Focus</div>
+              <div class="text-xs font-medium text-stone-800 mt-0.5" id="map-point-focus">Slope Instability, Friction Verification & CERN/Zenodo Data Archival</div>
+            </div>
+          </div>
+
+          <!-- Quick Location Switcher Buttons -->
+          <div class="space-y-1.5 pt-2">
+            <span class="text-[11px] font-mono uppercase text-stone-400">Quick Focus Jump:</span>
+            <div class="grid grid-cols-2 gap-1.5 text-xs font-medium">
+              <button onclick="flyToLocation(0)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">1. Rudraprayag</button>
+              <button onclick="flyToLocation(1)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">2. Gepang Gath</button>
+              <button onclick="flyToLocation(2)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">3. Jaisalmer Survey</button>
+              <button onclick="flyToLocation(3)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">4. Delhi University</button>
+              <button onclick="flyToLocation(4)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">5. Korba Mine Solar</button>
+              <button onclick="flyToLocation(5)" class="px-2 py-1.5 rounded bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 text-left truncate">6. Pune MCDM Solar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SYSTEMS ARCHITECTURE & AI PRODUCTS -->
+  <section id="systems" class="py-20 border-b border-stone-200/80 bg-stone-50/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-900 text-white font-mono text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="cpu" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Engineering & AI Architecture</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          Scalable Vision AI, Edge Systems & Geospatial Tooling
+        </h2>
+        <p class="text-stone-600 text-base leading-relaxed">
+          Operating with an architecture-first engineering philosophy: designing real-time vision pipelines, autonomous multi-agent spatial engines, and high-performance desktop GIS software.
+        </p>
+      </div>
+
+      <!-- PRODUCT 1: CAMAI ENTERPRISE VISION -->
+      <div class="bg-white rounded-2xl border border-stone-200 shadow-md p-6 sm:p-8 space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-4">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-900 font-mono text-xs font-bold border border-emerald-300">
+                Founder & Chief Systems Architect
+              </span>
+              <span class="px-2.5 py-1 rounded-md bg-stone-100 text-stone-700 font-mono text-xs font-semibold border border-stone-300">
+                Jul 2026 – Present
+              </span>
+              <span class="text-xs text-emerald-700 font-mono font-medium">Enterprise Acquisition Negotiations</span>
+            </div>
+
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+              CamAI – Real-Time Visual Intelligence Ecosystem
+            </h3>
+            <p class="text-xs font-mono text-stone-500">
+              Live Platform Deployment: <a href="https://camai.princesite.in" target="_blank" rel="noopener" class="text-emerald-700 underline font-semibold">camai.princesite.in</a>
+            </p>
+
+            <p class="text-sm text-stone-700 leading-relaxed">
+              Designed and architected an end-to-end vision AI platform for intelligent edge surveillance, real-time multi-camera object tracking, and spatial telemetry. Orchestrated the high-throughput inference pipeline utilizing <strong>TensorRT FP16</strong>, <strong>ByteTrack Re-ID</strong>, and custom <strong>Python/FastAPI</strong> microservices connected to an Electron/TypeScript dashboard.
+            </p>
+
+            <!-- Technical Highlights -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+              <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-200">
+                <div class="font-mono text-[10px] text-stone-400 uppercase">Inference Engine</div>
+                <div class="font-bold text-stone-800 mt-0.5">TensorRT FP16</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-200">
+                <div class="font-mono text-[10px] text-stone-400 uppercase">Multi-Object Tracking</div>
+                <div class="font-bold text-stone-800 mt-0.5">ByteTrack Re-ID</div>
+              </div>
+              <div class="p-2.5 rounded-lg bg-stone-50 border border-stone-200">
+                <div class="font-mono text-[10px] text-stone-400 uppercase">Architecture</div>
+                <div class="font-bold text-stone-800 mt-0.5">FastAPI + Electron TS</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a href="https://camai.princesite.in" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-xs transition-colors">
+                <span>Visit Live Platform</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="https://github.com/sutharprin098/camai-releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs border border-stone-300 transition-colors">
+                <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                <span>Public Releases</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 space-y-3">
+            <div class="rounded-xl overflow-hidden border border-stone-300 shadow-sm bg-stone-900">
+              <img src="assets/images/camai_preview.png" alt="CamAI Platform Interface" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+            <div class="text-[11px] text-stone-500 font-mono text-center">
+              Production Workstation UI: Multi-Camera Stream Telemetry
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PRODUCT 2 & 3: AUTOGIS STUDIO & GEOLIBRE & TERRA AI -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- AutoGIS Studio -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm flex flex-col justify-between">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-emerald-800 uppercase px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200">Open Source</span>
+              <span class="text-xs font-mono text-stone-400">Oct 2026</span>
+            </div>
+            <h4 class="text-xl font-bold text-stone-900">AutoGIS Studio</h4>
+            <div class="text-xs font-mono text-stone-500">Autonomous QGIS AI Desktop Assistant</div>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Developed a specialized AI assistant for QGIS Desktop using PyQGIS to automate natural-language GIS workflows, coordinate reprojections, and layer styling. Integrated multi-provider LLMs with direct OSM and DEM data retrieval.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex items-center justify-between">
+            <a href="https://github.com/sutharprin098/AutoGIS" target="_blank" rel="noopener" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1">
+              <span>Inspect AutoGIS Repository</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+            <span class="text-[11px] font-mono text-stone-400">MIT License</span>
+          </div>
+        </div>
+
+        <!-- GeoLibre India GIS Plugin -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm flex flex-col justify-between">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-amber-800 uppercase px-2 py-0.5 rounded bg-amber-50 border border-amber-200">8.3k+ Stars</span>
+              <span class="text-xs font-mono text-stone-400">Merged PR</span>
+            </div>
+            <h4 class="text-xl font-bold text-stone-900">GeoLibre India GIS</h4>
+            <div class="text-xs font-mono text-stone-500">Cloud-Native Desktop GIS Ecosystem</div>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Authored and integrated core plugin PR enabling regional selection, dataset query search, and automated layer ingestion for Indian geospatial datasets into the Tauri v2, React, TypeScript, and MapLibre stack.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex items-center justify-between">
+            <a href="https://github.com/sutharprin098/GeoLibre" target="_blank" rel="noopener" class="text-xs font-semibold text-stone-800 hover:text-stone-950 flex items-center gap-1">
+              <span>View Repository Contribution</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+            <span class="text-[11px] font-mono text-stone-400">Tauri v2 + MapLibre</span>
+          </div>
+        </div>
+
+        <!-- Terra AI Autonomous Engine -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm flex flex-col justify-between">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold text-purple-800 uppercase px-2 py-0.5 rounded bg-purple-50 border border-purple-200">R&D Proof-of-Concept</span>
+              <span class="text-xs font-mono text-stone-400">Dec 2025 – Apr 2026</span>
+            </div>
+            <h4 class="text-xl font-bold text-stone-900">Terra AI Engine</h4>
+            <div class="text-xs font-mono text-stone-500">Autonomous Spatial Multi-Agent Swarms</div>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Architected a proof-of-concept autonomous spatial AI system exploring multi-agent LLM swarms for geospatial ETL automation, coordinate re-projection, and raster algebra without manual script intervention.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-stone-700">Multi-Agent Swarm Arch</span>
+            <span class="text-[11px] font-mono text-stone-400">Completed R&D</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GEOSPATIAL CONSULTING & INDUSTRY PRACTICE -->
+  <section id="consulting" class="py-20 border-b border-stone-200/80 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-amber-50 text-amber-900 border border-amber-200 font-mono text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+          <span>Industry Engagements</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          Strategic Geospatial Consulting & Energy Transition
+        </h2>
+        <p class="text-stone-600 text-base leading-relaxed">
+          Delivering techno-economic suitability modeling, 3D terrain analysis, and travel-time catchments for commercial infrastructure, climate-tech, and municipal healthcare clients.
+        </p>
+      </div>
+
+      <!-- Consulting Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Post-Mining Brownfield to Solar -->
+        <div class="bg-gradient-to-br from-stone-50 to-amber-50/30 rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="space-y-2">
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-mono text-[11px] font-bold border border-amber-300">
+              Active Client Engagement
+            </span>
+            <h3 class="text-lg font-bold text-stone-900 pt-1">
+              Post-Mining Brownfield-to-Solar Reclamation
+            </h3>
+            <div class="text-xs font-mono text-stone-500">Open-Cast Decommissioning • 3D Terrain Analysis</div>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            Conducting 3D terrain and techno-economic suitability modeling for a decommissioning open-cast mine to repurpose degraded land into a utility-scale Solar PV park. Utilizing DEM slope/aspect masking (&lt; 5° threshold), shadow analysis, and Global Horizontal Irradiance (GHI) modeling to calculate net installable Megawatt (MW) capacity and grid evacuation routing.
+          </p>
+          <div class="pt-2 border-t border-stone-200/80 text-[11px] font-mono text-stone-600 flex items-center gap-1.5">
+            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-600"></i>
+            <span>GHI Modeling & MW Yield Optimization</span>
+          </div>
+        </div>
+
+        <!-- Utility Solar Siting Pune -->
+        <div class="bg-stone-50 rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="space-y-2">
+            <span class="px-2 py-0.5 rounded bg-stone-200 text-stone-800 font-mono text-[11px] font-bold">
+              Pune Renewable Corridor
+            </span>
+            <h3 class="text-lg font-bold text-stone-900 pt-1">
+              Utility Solar Siting Multi-Criteria Decision (MCDM)
+            </h3>
+            <div class="text-xs font-mono text-stone-500">20+ Geospatial Layers • Grid Interconnect</div>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            Executed Multi-Criteria Decision Making (MCDM) across 20+ geospatial layers (solar irradiance, grid substation proximity, slope stability, transmission corridor buffers, and land-use zoning) for utility-scale solar siting.
+          </p>
+          <div class="pt-2 border-t border-stone-200/80 text-[11px] font-mono text-stone-600 flex items-center gap-1.5">
+            <i data-lucide="layers" class="w-3.5 h-3.5 text-stone-600"></i>
+            <span>AHP Multi-Layer Spatial Ranking</span>
+          </div>
+        </div>
+
+        <!-- Ludhiana Healthcare Accessibility -->
+        <div class="bg-stone-50 rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="space-y-2">
+            <span class="px-2 py-0.5 rounded bg-stone-200 text-stone-800 font-mono text-[11px] font-bold">
+              Urban Spatial Health
+            </span>
+            <h3 class="text-lg font-bold text-stone-900 pt-1">
+              Healthcare Accessibility & Emergency Isochrones
+            </h3>
+            <div class="text-xs font-mono text-stone-500">Ludhiana Municipal Catchment Modeling</div>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            Modeled multi-modal travel-time isochrones and service-area catchments to identify spatial equity gaps and determine optimal locations for emergency medical facility placement across high-density urban corridors.
+          </p>
+          <div class="pt-2 border-t border-stone-200/80 text-[11px] font-mono text-stone-600 flex items-center gap-1.5">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-stone-600"></i>
+            <span>15 & 30-Minute Isochrone Delimitation</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Carbon X Services Company Experience Bar -->
+      <div class="p-6 rounded-2xl bg-stone-100/70 border border-stone-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <h4 class="font-bold text-stone-900 text-base">Carbon X Services Pvt. Ltd.</h4>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-stone-200 text-stone-700">Mar 2026 – Jun 2026</span>
+          </div>
+          <p class="text-xs text-stone-600">
+            <strong>GIS Analyst (Remote):</strong> Processed multi-temporal satellite imagery to evaluate biomass carbon sequestration potential and land-cover dynamics for commercial climate-tech applications, standardizing spatial ETL workflows across siting projects.
+          </p>
+        </div>
+        <span class="text-xs font-mono font-semibold text-emerald-800 shrink-0">Biomass Sequestration & Spatial ETL</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS & ARCHITECTURAL TOOLKIT -->
+  <section id="skills" class="py-20 border-b border-stone-200/80 bg-stone-50/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-900 text-white font-mono text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="terminal" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Technical Competencies</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          Technical & Architectural Skills Matrix
+        </h2>
+        <p class="text-stone-600 text-base leading-relaxed">
+          Comprehensive synthesis across satellite earth observation, multi-criteria spatial analytics, edge AI architecture, and field research methodologies.
+        </p>
+      </div>
+
+      <!-- 4 Pillars Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Pillar 1: Earth Observation & GIS -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center">
+            <i data-lucide="satellite" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-stone-900 text-base">Earth Observation & GIS</h3>
+          <ul class="space-y-2 text-xs text-stone-600">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>Copernicus DEM GLO-30 Elevation</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>Sentinel-1 SAR (VV/VH Backscatter)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>Sentinel-2 Multispectral (NDWI/MNDWI)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>ArcGIS Pro & QGIS Desktop / PyQGIS</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>Google Earth Engine (GEE)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              <span>ESA SNAP, GDAL, GeoPandas</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2: Spatial Modeling & Analytics -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center">
+            <i data-lucide="calculator" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-stone-900 text-base">Spatial Modeling & Analytics</h3>
+          <ul class="space-y-2 text-xs text-stone-600">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>AHP Multi-Criteria Analysis (MCDM)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>3D Terrain Modeling & Hillshading</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>Slope Gradient & Aspect Friction Surfaces</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>Utility Solar PV Siting & GHI Modeling</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>Post-Mining Brownfield Reclamation</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <span>Travel-Time Isochrone Catchments</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3: Systems & AI Architecture -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-800 flex items-center justify-center">
+            <i data-lucide="hard-drive" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-stone-900 text-base">Systems & AI Architecture</h3>
+          <ul class="space-y-2 text-xs text-stone-600">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>End-to-End System Design & Synthesis</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>Edge Inference (TensorRT FP16)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>ByteTrack Re-ID Multi-Object Tracking</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>FastAPI Microservices & Python</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>React, TypeScript & Electron Desktop</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
+              <span>Multi-Agent LLM Swarms (Terra AI)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 4: Research Methodologies & Fieldwork -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-6 space-y-4 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-800 flex items-center justify-center">
+            <i data-lucide="compass" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-stone-900 text-base">Research Methodologies</h3>
+          <ul class="space-y-2 text-xs text-stone-600">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>ICMR Exposure & Vulnerability Modeling</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>In-Situ GPS Ground-Truthing & Sampling</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>Stratified Demographic Field Surveys</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>Open Science Workflows (Zenodo, ORCID)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>Quantitative Geostatistics & Cartography</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+              <span>Environmental Geomorphology</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION, CERTIFICATIONS & LEADERSHIP -->
+  <section class="py-20 border-b border-stone-200/80 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        <!-- Left: Education & Certifications -->
+        <div class="space-y-8">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-100 text-stone-800 font-mono text-xs font-semibold uppercase tracking-wider mb-3">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-800"></i>
+              <span>Academic Foundation</span>
+            </div>
+            <h3 class="text-2xl font-bold text-stone-900 tracking-tight">Education & Honors</h3>
+          </div>
+
+          <!-- DU Degree Card -->
+          <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded">4-Year Research Track</span>
+              <span class="text-xs font-mono text-stone-500">Expected July 2027</span>
+            </div>
+            <h4 class="text-lg font-bold text-stone-900">University of Delhi – Dr. Bhim Rao Ambedkar College</h4>
+            <div class="text-xs font-medium text-stone-700">
+              BA (Hons.) Geography with Research • <strong>First Class Standing</strong> • New Delhi, India
+            </div>
+            <p class="text-xs text-stone-600 leading-relaxed pt-1">
+              <strong>Core Quantitative Modules:</strong> Remote Sensing & GIS, Geostatistics, Cartography & Geovisualization, Environmental Geomorphology, Terrain Modeling, Quantitative Research Methodologies.
+            </p>
+          </div>
+
+          <!-- Certifications List -->
+          <div class="space-y-3">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-stone-500 font-mono">Specialized Research Training</h4>
+            
+            <div class="space-y-2 text-xs">
+              <div class="p-3 rounded-xl bg-white border border-stone-200 flex items-start gap-3">
+                <i data-lucide="shield" class="w-4 h-4 text-emerald-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="font-bold text-stone-800">ICMR & ESDA India: Environmental Health & Data-Driven Modeling</div>
+                  <div class="text-stone-500 text-[11px] mt-0.5">Capacity Building Workshop supported by Ministry of Health and Family Welfare, Govt. of India.</div>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white border border-stone-200 flex items-start gap-3">
+                <i data-lucide="globe" class="w-4 h-4 text-cyan-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="font-bold text-stone-800">United Nations University (UNU-IAS): Net Zero 101</div>
+                  <div class="text-stone-500 text-[11px] mt-0.5">Carbon Policy, Measurement & Climate Modeling (2026).</div>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white border border-stone-200 flex items-start gap-3">
+                <i data-lucide="sun" class="w-4 h-4 text-amber-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="font-bold text-stone-800">The Open University (OpenLearn): Climate Change & Renewable Energy</div>
+                  <div class="text-stone-500 text-[11px] mt-0.5">Spatial Modeling certification (2026).</div>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white border border-stone-200 flex items-start gap-3">
+                <i data-lucide="award" class="w-4 h-4 text-stone-700 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="font-bold text-stone-800">Esri India User Conference 2026: National Call for Maps Selection</div>
+                  <div class="text-stone-500 text-[11px] mt-0.5">Competitive showcase certificate for Himalayan Isolation Gravity Model.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Field Expeditions & Academic Referees -->
+        <div class="space-y-8">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-100 text-stone-800 font-mono text-xs font-semibold uppercase tracking-wider mb-3">
+              <i data-lucide="flag" class="w-3.5 h-3.5 text-emerald-800"></i>
+              <span>Empirical Rigor</span>
+            </div>
+            <h3 class="text-2xl font-bold text-stone-900 tracking-tight">Expeditions & Leadership</h3>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Expedition 1 -->
+            <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-stone-800">Himalayan Landslide Mitigation (Rudraprayag, Uttarakhand)</span>
+                <span class="font-mono text-stone-500 text-[11px]">In-Situ Fieldwork</span>
+              </div>
+              <p class="text-xs text-stone-600">
+                Conducted geological and road-network vulnerability field assessments along the NH-7 hazard corridor. Validated slope instability models and critical chokepoints against satellite data.
+              </p>
+            </div>
+
+            <!-- Expedition 2 -->
+            <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-stone-800">Arid Socio-Economic Survey (Jaisalmer, Rajasthan)</span>
+                <span class="font-mono text-stone-500 text-[11px]">Field Survey</span>
+              </div>
+              <p class="text-xs text-stone-600">
+                Administered GPS spatial sampling and field surveys to analyze rural demographic adaptation and groundwater vulnerability in arid Thar ecosystems.
+              </p>
+            </div>
+
+            <!-- Leadership -->
+            <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-stone-800">Academic Technical Exhibits Leadership (BHŪ-CHETNA)</span>
+                <span class="font-mono text-stone-500 text-[11px]">2024 & 2025</span>
+              </div>
+              <p class="text-xs text-stone-600">
+                Headed technical coordination, digital spatial exhibits, and visual conference communications for University Annual Geo Fests.
+              </p>
+            </div>
+          </div>
+
+          <!-- Academic Referees Card -->
+          <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-check" class="w-4 h-4 text-emerald-800"></i>
+              <h4 class="font-bold text-stone-900 text-sm">Academic Referees & Recommendations</h4>
+            </div>
+            <p class="text-xs text-stone-700 leading-relaxed">
+              Supervising Faculty & Institutional Referees: Formal academic Letters of Recommendation (LoR) and institutional verifications from the Department of Geography, University of Delhi, available immediately upon request for graduate research admissions and fellowship committees.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT & COLLABORATION SECTION -->
+  <section id="contact" class="py-20 bg-stone-900 text-white relative overflow-hidden">
+    <!-- Ambient subtle background glow -->
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-emerald-800/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-stone-800/40 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+      
+      <div class="max-w-3xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-stone-800 text-emerald-400 font-mono text-xs font-semibold uppercase tracking-wider border border-stone-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Open for Inquiries & Research Dialogue</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+          Let’s Build Rigorous Spatial Intelligence Together.
+        </h2>
+        <p class="text-stone-300 text-base leading-relaxed">
+          Open to graduate research opportunities in geodata science, satellite earth observation, and cartography, as well as high-impact strategic consulting engagements.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Contact Cards Left Column (7 cols) -->
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <!-- Email Card -->
+          <div class="p-5 rounded-2xl bg-stone-800/90 border border-stone-700/80 space-y-3 hover:border-emerald-500/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-stone-400">Direct Email</span>
+              <i data-lucide="mail" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <div class="font-mono text-sm font-bold text-white break-all">official.princesuthar@gmail.com</div>
+            <div class="flex items-center gap-2 pt-1">
+              <a href="mailto:official.princesuthar@gmail.com" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold transition-colors">
+                Send Mail
+              </a>
+              <button onclick="copyToClipboard('official.princesuthar@gmail.com', 'Email copied!')" class="px-3 py-1.5 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 text-xs font-mono transition-colors">
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Phone Card -->
+          <div class="p-5 rounded-2xl bg-stone-800/90 border border-stone-700/80 space-y-3 hover:border-emerald-500/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-stone-400">Direct Phone / WhatsApp</span>
+              <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <div class="font-mono text-sm font-bold text-white">+91-9509706699</div>
+            <div class="flex items-center gap-2 pt-1">
+              <a href="tel:+919509706699" class="px-3 py-1.5 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 text-xs font-semibold transition-colors">
+                Call Now
+              </a>
+              <button onclick="copyToClipboard('+919509706699', 'Phone copied!')" class="px-3 py-1.5 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 text-xs font-mono transition-colors">
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- ORCID Card -->
+          <div class="p-5 rounded-2xl bg-stone-800/90 border border-stone-700/80 space-y-3 hover:border-emerald-500/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-stone-400">ORCID Researcher ID</span>
+              <i data-lucide="book" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <div class="font-mono text-sm font-bold text-white">0009-0008-5483-2837</div>
+            <div class="pt-1">
+              <a href="https://orcid.org/0009-0008-5483-2837" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold transition-colors">
+                <span>Verify on ORCID</span>
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- GitHub & CamAI Platform Card -->
+          <div class="p-5 rounded-2xl bg-stone-800/90 border border-stone-700/80 space-y-3 hover:border-emerald-500/50 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-stone-400">Digital Ecosystem</span>
+              <i data-lucide="github" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <div class="font-mono text-sm font-bold text-white">github.com/sutharprin098</div>
+            <div class="flex items-center gap-2 pt-1">
+              <a href="https://github.com/sutharprin098" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 text-xs font-semibold transition-colors">
+                GitHub
+              </a>
+              <a href="https://camai.princesite.in" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-stone-700 hover:bg-stone-600 text-stone-200 text-xs font-semibold transition-colors">
+                camai.princesite.in
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Message Prompt Card (5 cols) -->
+        <div class="lg:col-span-5 bg-stone-800/60 rounded-2xl border border-stone-700 p-6 space-y-4">
+          <h3 class="text-lg font-bold text-white">Quick Inquiry Template</h3>
+          <p class="text-xs text-stone-300 leading-relaxed">
+            Select a subject to pre-fill an inquiry directly to Prince's email client:
+          </p>
+
+          <div class="space-y-2">
+            <a href="mailto:official.princesuthar@gmail.com?subject=Graduate%20Research%20Inquiry%20-%20Geodata%20Science&body=Dear%20Prince%2C%0A%0AI%20reviewed%20your%20spatial%20data%20science%20research%20and%20publications%20(including%20your%20NH-7%20Zenodo%20paper%20and%20GLOF%20dissertation)%20and%20would%20like%20to%20discuss%20a%20research%20opportunity..." class="block p-3 rounded-xl bg-stone-900/80 hover:bg-stone-900 border border-stone-700 text-xs text-stone-200 transition-colors">
+              <div class="font-bold text-emerald-400">Academic / Graduate Research Inquiry</div>
+              <div class="text-[11px] text-stone-400 mt-0.5">PhD / Masters Opportunities & Fellowship Collaborations</div>
+            </a>
+
+            <a href="mailto:official.princesuthar@gmail.com?subject=Geospatial%20Consulting%20Inquiry%20-%20Solar%20%2F%20Terrain%20Modeling&body=Dear%20Prince%2C%0A%0AWe%20are%20interested%20in%20engaging%20your%20spatial%20consulting%20services%20(MCDM%2C%20Solar%20PV%20Siting%2C%20or%20Terrain%20Modeling)..." class="block p-3 rounded-xl bg-stone-900/80 hover:bg-stone-900 border border-stone-700 text-xs text-stone-200 transition-colors">
+              <div class="font-bold text-amber-400">Spatial AI & Solar Siting Consulting</div>
+              <div class="text-[11px] text-stone-400 mt-0.5">3D Terrain, Brownfield Reclamation & Multi-Criteria Siting</div>
+            </a>
+
+            <a href="mailto:official.princesuthar@gmail.com?subject=CamAI%20Platform%20Enterprise%20Inquiry&body=Dear%20Prince%2C%0A%0AWe%20would%20like%20to%20inquire%20regarding%20the%20CamAI%20Vision%20Intelligence%20ecosystem..." class="block p-3 rounded-xl bg-stone-900/80 hover:bg-stone-900 border border-stone-700 text-xs text-stone-200 transition-colors">
+              <div class="font-bold text-cyan-400">CamAI Enterprise Vision Technology</div>
+              <div class="text-[11px] text-stone-400 mt-0.5">Edge TensorRT Platform Acquisition & Integration</div>
+            </a>
+          </div>
+
+          <div class="pt-2 text-[11px] text-stone-400 font-mono text-center">
+            Standard response latency: &lt; 24 hours.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER BOTTOM BAR -->
+      <div class="pt-10 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-400 font-mono">
+        <div>
+          © 2026 PRINCE • Spatial Systems Architect. Hosted on <a href="https://www.princesite.in/" class="text-stone-300 hover:text-white underline">princesite.in</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#home" class="hover:text-white">Back to Top ↑</a>
+          <span>•</span>
+          <a href="assets/docs/Prince_Academic_CV_2026.pdf" download class="hover:text-emerald-400">Download CV (PDF)</a>
+          <span>•</span>
+          <a href="https://doi.org/10.5281/zenodo.23670659" target="_blank" rel="noopener" class="hover:text-emerald-400">Zenodo Citable Record</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LIGHTBOX MODAL FOR SCIENTIFIC FIGURES -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <div class="p-4 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+        <h4 class="font-bold text-stone-900 text-sm" id="lightbox-title">Scientific Figure View</h4>
+        <button onclick="closeLightbox()" class="w-8 h-8 rounded-lg bg-stone-200 hover:bg-stone-300 flex items-center justify-center text-stone-700 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="p-4 overflow-auto flex-1 flex items-center justify-center bg-stone-100">
+        <img id="lightbox-img" src="" alt="Enlarged research figure" class="max-h-[70vh] w-auto rounded-lg shadow-sm">
+      </div>
+      <div class="p-3 bg-white border-t border-stone-200 text-xs text-stone-500 font-mono flex justify-between items-center">
+        <span>Empirical GLOF Dissertation Output • University of Delhi</span>
+        <button onclick="closeLightbox()" class="px-3 py-1 rounded bg-stone-100 hover:bg-stone-200 font-sans font-semibold text-stone-800">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIBTEX CITATION MODAL -->
+  <div id="bibtex-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-stone-200 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="quote" class="w-4 h-4 text-emerald-800"></i>
+          <h4 class="font-bold text-stone-900 text-base">BibTeX Citation</h4>
+        </div>
+        <button onclick="closeBibtexModal()" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-700">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <pre class="bg-stone-900 text-emerald-300 font-mono text-xs p-4 rounded-xl overflow-x-auto leading-relaxed" id="bibtex-code">@article{suthar2026community,
+  author    = {Suthar, Prince},
+  title     = {Community Isolation Risk along the NH-7 Himalayan Transport Corridor},
+  journal   = {Zenodo Open Science Archive},
+  year      = {2026},
+  month     = {September},
+  doi       = {10.5281/zenodo.23670659},
+  url       = {https://doi.org/10.5281/zenodo.23670659},
+  note      = {Selected for Esri India User Conference 2026 Showcase}
+}</pre>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button onclick="copyBibtex()" class="px-4 py-2 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span id="bibtex-copy-btn-text">Copy BibTeX</span>
+        </button>
+        <button onclick="closeBibtexModal()" class="px-3.5 py-2 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-stone-900 text-white text-xs font-mono px-4 py-3 rounded-xl shadow-xl border border-stone-700 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toast-msg">Copied to clipboard!</span>
+  </div>
+
+  <!-- CLIENT-SIDE SCRIPTING FOR INTERACTIVITY -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // 1. Live UTC / IST Clock
+    function updateClock() {
+      const now = new Date();
+      const utcString = now.toUTCString().split(' ')[4] + ' UTC';
+      const istString = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST';
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) {
+        clockEl.textContent = `${utcString} • ${istString}`;
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. Telemetry HUD Target Switcher
+    const hudTargets = {
+      rudraprayag: {
+        title: "NH-7 Himalayan Arterial Transport Corridor",
+        desc: "Mastura Landslide Zone & Village Isolation Gravity Model",
+        tag: "AHP HAZARD",
+        fix: "30.2858° N, 78.9822° E",
+        elev: "895 m – 3,120 m (GLO-30)",
+        sensor: "ESA Copernicus + OSM",
+        metric: "3,419 Villages Analyzed",
+        meterLabel: "Calculated Vulnerability Weight",
+        meterVal: "87.1% (High Exposure)",
+        meterWidth: "87%",
+        actionText: "View Citable Research Paper & Zenodo Dataset",
+        actionHref: "#empirical-research"
+      },
+      gepang: {
+        title: "Gepang Gath Moraine-Dammed Glacial Lake",
+        desc: "Satellite SAR / Optical Monitoring & GLOF Early Warning",
+        tag: "GLOF SENSOR",
+        fix: "32.4812° N, 77.2154° E",
+        elev: "4,060 m (High Alpine)",
+        sensor: "Sentinel-1 SAR + Sentinel-2 NDWI",
+        metric: "U-Net Lake Segmentation Active",
+        meterLabel: "Expansion Acceleration Index",
+        meterVal: "92.4% (Critical Catchment)",
+        meterWidth: "92%",
+        actionText: "Inspect GLOF Dissertation Results",
+        actionHref: "#empirical-research"
+      },
+      solar: {
+        title: "Korba Decommissioning Open-Cast Coal Mine",
+        desc: "Brownfield-to-Solar PV Reclamation & 3D Terrain Siting",
+        tag: "PV TECHNO-ECON",
+        fix: "22.3142° N, 82.6841° E",
+        elev: "298 m Pit Depth Relief",
+        sensor: "3D DEM Slope/Aspect Masking",
+        metric: "Slope < 5° Threshold & GHI Modeling",
+        meterLabel: "Net Installable MW Potential",
+        meterVal: "78.5% (High Suitability)",
+        meterWidth: "78%",
+        actionText: "Review Consulting Portfolio",
+        actionHref: "#consulting"
+      },
+      du: {
+        title: "University of Delhi • Dept of Geography Base",
+        desc: "Geospatial Modeling & Cartographic Research Laboratory",
+        tag: "ACADEMIC BASE",
+        fix: "28.6139° N, 77.2090° E",
+        elev: "216 m (Indo-Gangetic)",
+        sensor: "PyQGIS • AutoGIS Studio Engine",
+        metric: "First Class Research Standing",
+        meterLabel: "Scholarly Publication Metric",
+        meterVal: "98.0% (Verified Zenodo DOI)",
+        meterWidth: "98%",
+        actionText: "Explore Academic Referees & LoR",
+        actionHref: "#skills"
+      }
+    };
+
+    function switchTarget(key) {
+      const data = hudTargets[key];
+      if (!data) return;
+
+      document.getElementById('target-title').textContent = data.title;
+      document.getElementById('target-desc').textContent = data.desc;
+      document.getElementById('target-tag').textContent = data.tag;
+      document.getElementById('target-fix').textContent = data.fix;
+      document.getElementById('target-elev').textContent = data.elev;
+      document.getElementById('target-sensor').textContent = data.sensor;
+      document.getElementById('target-metric').textContent = data.metric;
+      document.getElementById('meter-label').textContent = data.meterLabel;
+      document.getElementById('meter-val').textContent = data.meterVal;
+      document.getElementById('meter-bar').style.width = data.meterWidth;
+      
+      const actionBtn = document.getElementById('target-action');
+      actionBtn.querySelector('span').textContent = data.actionText;
+      actionBtn.href = data.actionHref;
+
+      // Update selector buttons styling
+      ['rudraprayag', 'gepang', 'solar', 'du'].forEach(k => {
+        const btn = document.getElementById(`btn-${k}`);
+        if (k === key) {
+          btn.className = "px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-emerald-700 text-emerald-900 font-semibold shadow-xs";
+        } else {
+          btn.className = "px-2.5 py-2 rounded-lg text-left text-xs font-medium border bg-white border-stone-200 text-stone-700 hover:border-stone-300";
+        }
+      });
+    }
+
+    // 3. Interactive AHP Multi-Criteria Simulator Logic
+    function updateAHPCalculator() {
+      const road = parseFloat(document.getElementById('slider-road').value);
+      const health = parseFloat(document.getElementById('slider-health').value);
+      const nh7 = parseFloat(document.getElementById('slider-nh7').value);
+      const slope = parseFloat(document.getElementById('slider-slope').value);
+      const elev = parseFloat(document.getElementById('slider-elev').value);
+
+      document.getElementById('val-road').textContent = road.toFixed(1) + '%';
+      document.getElementById('val-health').textContent = health.toFixed(1) + '%';
+      document.getElementById('val-nh7').textContent = nh7.toFixed(1) + '%';
+      document.getElementById('val-slope').textContent = slope.toFixed(1) + '%';
+      document.getElementById('val-elev').textContent = elev.toFixed(1) + '%';
+
+      // Normalize weights
+      const sum = road + health + nh7 + slope + elev;
+      const w_road = road / sum;
+      const w_health = health / sum;
+      const w_nh7 = nh7 / sum;
+      const w_slope = slope / sum;
+      const w_elev = elev / sum;
+
+      // Simulated sample village baseline indices
+      // Mastura high hazard sample: Road friction = 0.82, Health lag = 0.75, NH-7 dist = 0.65, Slope = 0.88, Elev = 0.60
+      const score = (w_road * 0.82) + (w_health * 0.75) + (w_nh7 * 0.65) + (w_slope * 0.88) + (w_elev * 0.60);
+      document.getElementById('ahp-score').textContent = score.toFixed(3);
+
+      const tierBadge = document.getElementById('ahp-tier-badge');
+      const tierText = document.getElementById('ahp-tier');
+      const highCount = document.getElementById('ahp-high-count');
+      const timeLag = document.getElementById('ahp-time-lag');
+
+      if (score > 0.75) {
+        tierBadge.className = "text-xs font-bold uppercase tracking-wider text-rose-700 mt-1.5 flex items-center justify-center gap-1";
+        tierText.textContent = "Critical Isolation Corridor";
+        highCount.textContent = "2,108 Villages (61.6%)";
+        timeLag.textContent = "6.2 Hours Lag";
+      } else if (score > 0.60) {
+        tierBadge.className = "text-xs font-bold uppercase tracking-wider text-amber-700 mt-1.5 flex items-center justify-center gap-1";
+        tierText.textContent = "High Vulnerability Exposure";
+        highCount.textContent = "1,842 Villages (53.9%)";
+        timeLag.textContent = "4.8 Hours Lag";
+      } else {
+        tierBadge.className = "text-xs font-bold uppercase tracking-wider text-emerald-700 mt-1.5 flex items-center justify-center gap-1";
+        tierText.textContent = "Moderate Resilient Corridor";
+        highCount.textContent = "985 Villages (28.8%)";
+        timeLag.textContent = "2.4 Hours Lag";
+      }
+    }
+
+    function resetAHPWeights() {
+      document.getElementById('slider-road').value = 46.91;
+      document.getElementById('slider-health').value = 20.10;
+      document.getElementById('slider-nh7').value = 20.10;
+      document.getElementById('slider-slope').value = 8.62;
+      document.getElementById('slider-elev').value = 4.27;
+      updateAHPCalculator();
+      showToast('AHP weights reset to published defaults.');
+    }
+
+    // 4. Interactive Leaflet Research Map Setup
+    let map;
+    let markers = [];
+    const researchStations = [
+      {
+        id: "STATION 01",
+        name: "Rudraprayag Hazard Ground-Truthing",
+        coords: [30.2858, 78.9822],
+        coordsText: "30.2858° N, 78.9822° E",
+        date: "Sept 2026",
+        desc: "Himalayan Landslide Mitigation along the NH-7 hazard corridor. Administered in-situ GPS spatial sampling and field assessments in Mastura to map road disruption exposure.",
+        focus: "Slope Instability, Friction Verification & CERN/Zenodo Data Archival"
+      },
+      {
+        id: "STATION 02",
+        name: "Gepang Gath Glacial Lake",
+        coords: [32.4812, 77.2154],
+        coordsText: "32.4812° N, 77.2154° E",
+        date: "Ongoing 2026",
+        desc: "Nepal & Himachal GLOF Dissertation: Sentinel-1 SAR backscatter & Sentinel-2 NDWI/MNDWI monitoring for moraine-dammed lake boundary fluctuations.",
+        focus: "Deep Learning Segmentation & Outburst Flood Dynamics"
+      },
+      {
+        id: "STATION 03",
+        name: "Jaisalmer Arid Socio-Economic Survey",
+        coords: [26.9157, 70.9083],
+        coordsText: "26.9157° N, 70.9083° E",
+        date: "2025",
+        desc: "Administered GPS spatial sampling and extensive household field surveys to analyze rural demographic adaptation and groundwater depletion in arid ecosystems.",
+        focus: "Stratified Spatial Sampling & Climate Vulnerability"
+      },
+      {
+        id: "STATION 04",
+        name: "University of Delhi • Geography Dept",
+        coords: [28.6139, 77.2090],
+        coordsText: "28.6139° N, 77.2090° E",
+        date: "2023 – 2027",
+        desc: "Dr. Bhim Rao Ambedkar College: 4-Year Research Track in Quantitative Geography. Academic headquarters for computational spatial analysis and GIS tool development.",
+        focus: "Remote Sensing, Geostatistics & Cartography Labs"
+      },
+      {
+        id: "STATION 05",
+        name: "Korba Post-Mining Solar Reclamation",
+        coords: [22.3142, 82.6841],
+        coordsText: "22.3142° N, 82.6841° E",
+        date: "2025 – Present",
+        desc: "Active client project: 3D terrain modeling for open-cast decommissioning mine to construct utility-scale Solar PV park. DEM slope masking & GHI yield estimation.",
+        focus: "Brownfield PV Repurposing & Grid Evacuation Routing"
+      },
+      {
+        id: "STATION 06",
+        name: "Pune Utility Solar PV Siting",
+        coords: [18.5204, 73.8567],
+        coordsText: "18.5204° N, 73.8567° E",
+        date: "2025",
+        desc: "Multi-Criteria Decision Making (MCDM) across 20+ geospatial layers (solar irradiance, grid substation distance, slope, zoning) for commercial utility solar.",
+        focus: "20+ Geospatial Layer Ranking & Interconnect Optimization"
+      },
+      {
+        id: "STATION 07",
+        name: "Ludhiana Healthcare Accessibility",
+        coords: [30.9010, 75.8573],
+        coordsText: "30.9010° N, 75.8573° E",
+        date: "2025",
+        desc: "Travel-time isochrones and catchment modeling for emergency healthcare facilities to eliminate spatial access disparity.",
+        focus: "Multi-Modal Travel Isochrones & Emergency Placement"
+      }
+    ];
+
+    function initMap() {
+      // Initialize map centered over North/Central India
+      map = L.map('leaflet-map', {
+        scrollWheelZoom: false
+      }).setView([28.6, 78.5], 5);
+
+      // Light cartographic tiles (CartoDB Positron)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Custom marker icon style
+      const customIcon = L.divIcon({
+        className: 'custom-pin',
+        html: `<div style="background-color: #2B593F; width: 14px; height: 14px; border-radius: 50%; border: 3px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7]
+      });
+
+      researchStations.forEach((st, idx) => {
+        const marker = L.marker(st.coords, { icon: customIcon }).addTo(map);
+        marker.bindPopup(`<strong>${st.name}</strong><br><span style="font-size:11px;color:#555;">${st.coordsText}</span>`);
+        marker.on('click', () => {
+          selectStation(idx);
+        });
+        markers.push(marker);
+      });
+    }
+
+    function selectStation(idx) {
+      const st = researchStations[idx];
+      document.getElementById('map-point-id').textContent = st.id;
+      document.getElementById('map-point-date').textContent = st.date;
+      document.getElementById('map-point-title').textContent = st.name;
+      document.getElementById('map-point-coords').textContent = st.coordsText;
+      document.getElementById('map-point-desc').textContent = st.desc;
+      document.getElementById('map-point-focus').textContent = st.focus;
+      
+      map.flyTo(st.coords, 7, { duration: 1.2 });
+      markers[idx].openPopup();
+    }
+
+    function flyToLocation(idx) {
+      selectStation(idx);
+    }
+
+    // 5. Lightbox functionality
+    function openLightbox(src, title) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const titleEl = document.getElementById('lightbox-title');
+      img.src = src;
+      titleEl.textContent = title;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // 6. BibTeX Modal
+    function openBibtexModal(type) {
+      const modal = document.getElementById('bibtex-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeBibtexModal() {
+      const modal = document.getElementById('bibtex-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyBibtex() {
+      const text = document.getElementById('bibtex-code').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('bibtex-copy-btn-text').textContent = "Copied!";
+        showToast('BibTeX citation copied to clipboard!');
+        setTimeout(() => {
+          document.getElementById('bibtex-copy-btn-text').textContent = "Copy BibTeX";
+        }, 2000);
+      });
+    }
+
+    // 7. Toast helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-msg');
+      msgEl.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    function copyToClipboard(text, successMsg) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(successMsg);
+      });
+    }
+
+    // 8. Generative Topographic Contour Animation in Hero
+    function initTopoCanvas() {
+      const canvas = document.getElementById('topo-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = canvas.parentElement.offsetHeight;
+
+      window.addEventListener('resize', () => {
+        if (!canvas) return;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      });
+
+      let step = 0;
+      function drawContour() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(43, 89, 63, 0.08)'; // Subtle emerald contour lines
+
+        const lines = 12;
+        for (let i = 0; i < lines; i++) {
+          ctx.beginPath();
+          const yOffset = (height / lines) * i;
+          for (let x = 0; x <= width; x += 30) {
+            const y = yOffset + Math.sin((x * 0.003) + (step * 0.01) + (i * 0.4)) * 25 + Math.cos((x * 0.005) - (step * 0.008)) * 15;
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.stroke();
+        }
+
+        step += 0.5;
+        requestAnimationFrame(drawContour);
+      }
+      drawContour();
+    }
+
+    // Run after DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      initTopoCanvas();
+      updateAHPCalculator();
+    });
+  </script>
+</body>
+</html>
