@@ -44,7 +44,6 @@
       min-height: 100vh;
     }
 
-    /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -126,7 +125,7 @@
 
     /* Hero Section */
     .hero {
-      padding: 80px 0 60px;
+      padding: 70px 0 50px;
       display: grid;
       grid-template-columns: 1.3fr 0.9fr;
       gap: 48px;
@@ -171,9 +170,9 @@
 
     .hero-desc {
       color: var(--text-muted);
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       line-height: 1.7;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .hero-metrics {
@@ -246,11 +245,11 @@
 
     /* Section Global */
     section {
-      padding: 70px 0;
+      padding: 60px 0;
     }
 
     .section-head {
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
 
     .section-tag {
@@ -330,8 +329,14 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
+    .tag-emerald {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: var(--emerald);
+    }
+
     .card-title {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 10px;
       line-height: 1.35;
@@ -339,7 +344,7 @@
 
     .card-desc {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       line-height: 1.6;
       margin-bottom: 20px;
       flex: 1;
@@ -351,6 +356,7 @@
       align-items: center;
       padding-top: 14px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
     }
 
     .card-link {
@@ -425,6 +431,7 @@
       justify-content: center;
       gap: 24px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
     .footer-links a {
@@ -462,8 +469,9 @@
       </a>
       <ul class="nav-links">
         <li><a href="#research">Research</a></li>
-        <li><a href="#projects">Software & Work</a></li>
-        <li><a href="#maps">Maps & Visuals</a></li>
+        <li><a href="#dashboards">GEE & Urban GIS</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#maps">Maps Gallery</a></li>
         <li><a href="#skills">Skills</a></li>
       </ul>
       <a href="assets/docs/Prince_Suthar_CV.pdf" class="btn-action" target="_blank">
@@ -479,14 +487,14 @@
       <div class="hero-content">
         <div class="status-pill">
           <div class="status-dot"></div>
-          Available for Geospatial Research & High-Impact Consulting
+          Available for Geospatial Research & High-Impact Spatial Projects
         </div>
         <h1 class="hero-title">
           Spatial Data Science &<br>
           <span>Earth Observation</span>
         </h1>
         <p class="hero-desc">
-          Undergraduate researcher at the University of Delhi. I bridge computational physical geography, satellite remote sensing (Sentinel-1 SAR / Sentinel-2 Optical), and autonomous spatial software engineering to model climate vulnerability and alpine hazards in the Himalayas.
+          Undergraduate researcher at the University of Delhi. I bridge computational physical geography, satellite remote sensing (Sentinel-1 SAR / Sentinel-2 Optical), and autonomous spatial software engineering to model climate vulnerability, alpine hazards, and environmental dynamics.
         </p>
 
         <div style="display: flex; gap: 14px; flex-wrap: wrap;">
@@ -494,7 +502,7 @@
             ORCID: 0009-0008-5483-2837
           </a>
           <a href="https://github.com/sutharprin098" target="_blank" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid var(--card-border);">
-            GitHub
+            GitHub: sutharprin098
           </a>
           <a href="https://www.linkedin.com/in/prince-suthar-79552428a/" target="_blank" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid var(--card-border);">
             LinkedIn
@@ -504,7 +512,7 @@
         <div class="hero-metrics">
           <div class="metric-card">
             <div class="metric-num">3,419</div>
-            <div class="metric-label">Settlements Analyzed</div>
+            <div class="metric-label">Settlements Modeled</div>
           </div>
           <div class="metric-card">
             <div class="metric-num">250+</div>
@@ -512,7 +520,7 @@
           </div>
           <div class="metric-card">
             <div class="metric-num">10m</div>
-            <div class="metric-label">Sentinel-2 MSI Res.</div>
+            <div class="metric-label">Sentinel-2 MSI Resolution</div>
           </div>
         </div>
       </div>
@@ -535,27 +543,27 @@
   <!-- Research & Publications Section -->
   <section id="research" class="container">
     <div class="section-head">
-      <div class="section-tag">Scientific Inquiries</div>
+      <div class="section-tag">Academic Research & Empirical Modeling</div>
       <h2 class="section-title">Research & Publications</h2>
     </div>
 
     <div class="grid-2">
-      <!-- Project 1: GLOF Thesis -->
+      <!-- Project 1: Himachal GLOF Thesis (Ongoing) -->
       <div class="card">
-        <img src="assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png" alt="GLOF Research" class="card-thumb" onerror="this.src='assets/images/Chandra_3_Lakes_Decadal_Expansion_Analysis.png'">
+        <img src="assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png" alt="Himachal GLOF Research" class="card-thumb" onerror="this.src='assets/images/Chandra_3_Lakes_Decadal_Expansion_Analysis.png'">
         <div class="card-body">
           <div class="card-tags">
+            <span class="tag tag-emerald">Ongoing Thesis</span>
             <span class="tag">Sentinel-1 SAR</span>
             <span class="tag">Sentinel-2 Optical</span>
             <span class="tag">GLOF Hydrodynamics</span>
-            <span class="tag">Thesis</span>
           </div>
-          <h3 class="card-title">AI-Based Monitoring & GLOF Risk in Chandra Basin, Himalayas</h3>
+          <h3 class="card-title">AI-Based Monitoring and Future Prediction of High-Altitude Glacial Lakes for GLOF Risk Assessment in Himachal Pradesh</h3>
           <p class="card-desc">
             Reconstructed 34-year decadal lake expansion (1990–2024) across benchmark proglacial lakes (Samudra Tapu: 161.9 ha; Gepang Gath: 104.5 ha) fusing multi-temporal Landsat 5/7/8 and Sentinel-2 (10m) water indices. Modeled 3D bathymetric water storage (30.7M–55.5M m³) and Froehlich dam-breach peak outflow (Qp = 8,093–12,108 m³/s) to simulate downstream arrival times at Sissu Village and Atal Tunnel corridor (NH-3).
           </p>
           <div class="card-links">
-            <span style="color: var(--emerald); font-size: 0.85rem; font-weight: 600;">Status: Ongoing Dissertation (DU)</span>
+            <span style="color: var(--emerald); font-size: 0.88rem; font-weight: 600;">Status: Active Research (Undergraduate Dissertation, DU)</span>
           </div>
         </div>
       </div>
@@ -570,9 +578,9 @@
             <span class="tag">Copernicus DEM</span>
             <span class="tag">Esri UC 2026</span>
           </div>
-          <h3 class="card-title">Community Isolation Risk Along NH-7 Transport Corridor</h3>
+          <h3 class="card-title">Community Isolation Risk along the NH-7 Himalayan Transport Corridor</h3>
           <p class="card-desc">
-            Formulated an independent spatial gravity model evaluating village accessibility exposure across 3,419 rural settlements in Uttarakhand. Integrated Copernicus GLO-30 DEM, OpenStreetMap networks, and in-situ GPS hazard ground-truthing in Rudraprayag (Mastura landslide corridor).
+            Formulated an independent spatial gravity model evaluating village accessibility exposure across 3,419 rural settlements along the NH-7 corridor in Uttarakhand within a 15 km buffer. Integrated Copernicus GLO-30 DEM, OpenStreetMap networks, and in-situ hazard ground-truthing in Rudraprayag (Mastura landslide corridor).
           </p>
           <div class="card-links">
             <a href="https://zenodo.org/records/23670659" target="_blank" class="card-link">
@@ -584,11 +592,61 @@
     </div>
   </section>
 
-  <!-- Software Engineering & Industry Consulting -->
-  <section id="projects" class="container">
+  <!-- GEE Dashboards & Urban GIS Analytics -->
+  <section id="dashboards" class="container">
     <div class="section-head">
-      <div class="section-tag">Engineering & Industry</div>
-      <h2 class="section-title">Software Systems & Consulting</h2>
+      <div class="section-tag">Interactive Geospatial Applications</div>
+      <h2 class="section-title">GEE Dashboards & Urban Analytics</h2>
+    </div>
+
+    <div class="grid-2">
+      <!-- GEE Rainfall Dashboard -->
+      <div class="card">
+        <img src="assets/images/gee_rainfall_dashboard.jpg" alt="GEE Rainfall Dashboard" class="card-thumb">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Google Earth Engine</span>
+            <span class="tag">JavaScript API</span>
+            <span class="tag">Climate Telemetry</span>
+            <span class="tag">GeoTIFF Export</span>
+          </div>
+          <h3 class="card-title">Interactive Rainfall Monitoring Dashboard (2005–2024)</h3>
+          <p class="card-desc">
+            Built an autonomous climate application utilizing the Google Earth Engine (GEE) JavaScript UI API. Features national and state-level precipitation analytics, custom temporal range filtering, dynamic precipitation visualization palettes, interactive monthly and daily precipitation trend charts, and automated multi-band GeoTIFF spatial raster export.
+          </p>
+          <div class="card-links">
+            <a href="https://github.com/sutharprin098" target="_blank" class="card-link">Explore Code & Scripts &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bengaluru BBMP Governance Stress Index -->
+      <div class="card">
+        <img src="assets/images/bbmp_governance_stress_index.jpg" alt="BBMP Civic Grievance Analysis" class="card-thumb">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Urban GIS</span>
+            <span class="tag">Spatial Hotspots</span>
+            <span class="tag">Governance Stress Index</span>
+            <span class="tag">Smart Cities</span>
+          </div>
+          <h3 class="card-title">GIS-Based Civic Grievance Analysis of Bengaluru (BBMP)</h3>
+          <p class="card-desc">
+            Ward-level spatial analysis of civic grievances across Bengaluru (BBMP) examining complaint distributions from 2020–2025. Engineered a population-normalized Governance Stress Index (GSI) and spatial hotspot clustering to identify persistent municipal stress zones, supporting data-driven urban planning, service equality, and decision-making.
+          </p>
+          <div class="card-links">
+            <a href="#maps" class="card-link">View Cartographic Plates (Fig 1 & 2) &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open-Source & Software Engineering -->
+  <section id="software" class="container">
+    <div class="section-head">
+      <div class="section-tag">Software Engineering & Tools</div>
+      <h2 class="section-title">Open-Source Plugins & AI Systems</h2>
     </div>
 
     <div class="grid-3">
@@ -602,10 +660,29 @@
           </div>
           <h3 class="card-title">AutoGIS (Plugin ID: 6782)</h3>
           <p class="card-desc">
-            Autonomous geospatial AI plugin with 39 spatial tools in QGIS Desktop. Connected to Google Earth Engine and live OSM streaming, achieving 250+ community downloads in 48 hours.
+            Autonomous geospatial AI plugin with 39 spatial tools inside QGIS Desktop. Features automated raster algebra, cloud masking, and GEE/OSM pipelines; gained 250+ active downloads in 48 hours.
           </p>
           <div class="card-links">
             <a href="https://autogis.princesite.in" target="_blank" class="card-link">Live Portal &rarr;</a>
+            <a href="https://github.com/sutharprin098" target="_blank" class="card-link">GitHub &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GeoLibre Contribution -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">GeoLibre (8.3k★)</span>
+            <span class="tag">Core Contributor</span>
+            <span class="tag">XERJ Corpus Hub</span>
+          </div>
+          <h3 class="card-title">GeoLibre India GIS Dataset Ecosystem</h3>
+          <p class="card-desc">
+            Authored accepted core pull request (14 files, ~1,400 lines) enabling regional administrative querying and automated GeoJSON streaming; indexed in the XERJ Public Corpus Hub.
+          </p>
+          <div class="card-links">
+            <a href="https://github.com/sutharprin098" target="_blank" class="card-link">View Pull Request &rarr;</a>
           </div>
         </div>
       </div>
@@ -618,44 +695,54 @@
             <span class="tag">FastAPI</span>
             <span class="tag">ByteTrack Re-ID</span>
           </div>
-          <h3 class="card-title">CamAI Vision Ecosystem</h3>
+          <h3 class="card-title">CamAI Vision Intelligence</h3>
           <p class="card-desc">
-            Engineered real-time edge vision intelligence platform for intelligent spatial telemetry, live multi-camera tracking, and inference pipelines.
+            Engineered real-time edge vision platform for intelligent surveillance, multi-camera spatial tracking, and TensorRT FP16 inference pipelines.
           </p>
           <div class="card-links">
             <a href="https://camai.princesite.in" target="_blank" class="card-link">Visit CamAI &rarr;</a>
           </div>
         </div>
       </div>
-
-      <!-- Carbon X & Solar Consulting -->
-      <div class="card">
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="tag">Industry GIS</span>
-            <span class="tag">CCUS Suitability</span>
-            <span class="tag">Solar MCDM</span>
-          </div>
-          <h3 class="card-title">Geospatial Consultancy</h3>
-          <p class="card-desc">
-            Modeled Carbon Capture and Storage (CCS) geological injection zones at Carbon X Services. Delivered solar farm suitability on decommissioned coal mines and healthcare isochrones in Ludhiana.
-          </p>
-          <div class="card-links">
-            <span style="color: var(--primary); font-size: 0.85rem; font-weight: 600;">Client-Facing / Industry</span>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- Technical Maps Gallery -->
+  <!-- High-Res Maps & Cartography Gallery -->
   <section id="maps" class="container">
     <div class="section-head">
-      <div class="section-tag">Cartography & Spatial Analytics</div>
-      <h2 class="section-title">Technical Maps & Visualizations</h2>
+      <div class="section-tag">Cartographic Showcase</div>
+      <h2 class="section-title">Technical Maps & Cartographic Plates</h2>
     </div>
 
     <div class="grid-3">
+      <!-- BBMP Figure 1 -->
+      <div class="card">
+        <img src="assets/images/bbmp_grievance_distribution.jpg" alt="BBMP Ward-wise Grievance Distribution" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">BBMP Grievance Distribution (Fig 1)</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Total registered civic complaints per ward across Bengaluru (2020–2025).</p>
+        </div>
+      </div>
+
+      <!-- BBMP Figure 2 -->
+      <div class="card">
+        <img src="assets/images/bbmp_governance_stress_index.jpg" alt="BBMP Governance Stress Index" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">Governance Stress Index (Fig 2)</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Population-normalized grievance intensity and municipal stress hotspots.</p>
+        </div>
+      </div>
+
+      <!-- GEE Rainfall Dashboard UI -->
+      <div class="card">
+        <img src="assets/images/gee_rainfall_dashboard.jpg" alt="GEE Rainfall Dashboard UI" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">GEE Rainfall Dashboard UI</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Interactive national & state-level precipitation analytics UI console.</p>
+        </div>
+      </div>
+
+      <!-- Dam Breach -->
       <div class="card">
         <img src="assets/images/Chandra_3_Lakes_Dam_Breach_and_Peak_Discharge.png" alt="Dam Breach Simulation" class="card-thumb">
         <div class="card-body" style="padding: 16px;">
@@ -664,18 +751,20 @@
         </div>
       </div>
 
+      <!-- 3D Bathymetry -->
       <div class="card">
         <img src="assets/images/Chandra_3_Lakes_Bathymetry_and_Volume_Analysis.png" alt="Bathymetry Modeling" class="card-thumb">
         <div class="card-body" style="padding: 16px;">
-          <h4 style="font-size: 1rem; margin-bottom: 4px;">3D Bathymetry & Volume</h4>
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">3D Bathymetry & Stored Volume</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted);">Multi-model stage-storage volume curves using Copernicus 30m DEM.</p>
         </div>
       </div>
 
+      <!-- Sentinel-2 Composite -->
       <div class="card">
         <img src="assets/images/Sentinel2_10m_Satellite_Imagery_Verification.png" alt="Sentinel-2 Verification" class="card-thumb">
         <div class="card-body" style="padding: 16px;">
-          <h4 style="font-size: 1rem; margin-bottom: 4px;">Sentinel-2 Multi-Spectral Verification</h4>
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">Sentinel-2 Multi-Spectral Calibration</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted);">False-color composite & high-altitude glacial lake boundary calibration.</p>
         </div>
       </div>
@@ -693,11 +782,11 @@
       <div class="skill-box">
         <div class="skill-cat"><span>01.</span> Earth Observation</div>
         <div class="skill-pills">
+          <div class="skill-pill">Google Earth Engine</div>
           <div class="skill-pill">Sentinel-1 SAR</div>
           <div class="skill-pill">Sentinel-2 Optical</div>
           <div class="skill-pill">Landsat 5/7/8/9</div>
           <div class="skill-pill">Copernicus DEM</div>
-          <div class="skill-pill">Google Earth Engine</div>
           <div class="skill-pill">ESA SNAP</div>
         </div>
       </div>
@@ -715,14 +804,14 @@
       </div>
 
       <div class="skill-box">
-        <div class="skill-cat"><span>03.</span> AI & Systems</div>
+        <div class="skill-cat"><span>03.</span> Urban & Web GIS</div>
         <div class="skill-pills">
-          <div class="skill-pill">TensorRT FP16</div>
-          <div class="skill-pill">ByteTrack</div>
-          <div class="skill-pill">FastAPI</div>
-          <div class="skill-pill">TypeScript</div>
-          <div class="skill-pill">Docker</div>
-          <div class="skill-pill">FastMCP</div>
+          <div class="skill-pill">GEE JS API</div>
+          <div class="skill-pill">QGIS Desktop</div>
+          <div class="skill-pill">Hotspot Analysis</div>
+          <div class="skill-pill">ArcGIS Pro</div>
+          <div class="skill-pill">MapLibre GL</div>
+          <div class="skill-pill">Spatial SQL</div>
         </div>
       </div>
 
@@ -733,7 +822,7 @@
           <div class="skill-pill">ORCID</div>
           <div class="skill-pill">In-Situ GPS</div>
           <div class="skill-pill">Himalayan Hazard</div>
-          <div class="skill-pill">ICMR Exposure</div>
+          <div class="skill-pill">ICMR Training</div>
           <div class="skill-pill">QGIS Plugins</div>
         </div>
       </div>
