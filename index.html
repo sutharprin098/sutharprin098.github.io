@@ -1,700 +1,758 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prince — Spatial Data Science & AI Portfolio</title>
-  <meta name="description" content="Portfolio of Prince: Spatial Data Science, Earth Observation Researcher & Systems Architect.">
-  <link rel="canonical" href="https://princesite.in/">
-
-  <!-- Google Fonts: Inter / Plus Jakarta Sans -->
+  <title>Prince | Spatial Data Science & Earth Observation Researcher</title>
+  <meta name="description" content="Portfolio of Prince: Spatial Data Scientist, Remote Sensing & Earth Observation Researcher, Creator of AutoGIS (QGIS Plugin #6782).">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#F4F9F5',
-              100: '#E6F3E9',
-              500: '#22C55E',
-              600: '#16A34A',
-              700: '#15803D',
-              800: '#166534',
-              900: '#14532D',
-            }
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Leaflet for interactive map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
   <style>
+    :root {
+      --bg: #070d18;
+      --card-bg: rgba(14, 25, 45, 0.75);
+      --card-border: rgba(30, 60, 110, 0.45);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.25);
+      --accent: #60a5fa;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background-color: #FAFAFA;
-      color: #18181B;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, rgba(96, 165, 250, 0.06) 0%, transparent 40%),
+        linear-gradient(to bottom, #070d18 0%, #030712 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
     }
 
-    /* Subtle dot grid pattern */
-    .bg-dot-pattern {
-      background-image: radial-gradient(#E4E4E7 1px, transparent 1px);
-      background-size: 24px 24px;
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
-    /* Clean custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 13, 24, 0.85);
+      border-bottom: 1px solid var(--card-border);
+      z-index: 100;
+      padding: 16px 0;
     }
-    ::-webkit-scrollbar-track {
-      background: #FAFAFA;
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    ::-webkit-scrollbar-thumb {
-      background: #D4D4D8;
-      border-radius: 9999px;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+      text-decoration: none;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #A1A1AA;
+
+    .brand-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--emerald);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--emerald);
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .metric-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .hero-image-wrap {
+      position: relative;
+    }
+
+    .hero-photo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .hero-photo {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      object-fit: cover;
+      max-height: 440px;
+    }
+
+    .floating-badge {
+      position: absolute;
+      bottom: -15px;
+      right: 20px;
+      background: rgba(14, 25, 45, 0.95);
+      border: 1px solid var(--primary);
+      backdrop-filter: blur(10px);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* Section Global */
+    section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      margin-bottom: 40px;
+    }
+
+    .section-tag {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--card-border);
+      background: #000;
+    }
+
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .card-links {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .card-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Skills Cloud */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .skill-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .skill-cat {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-cat span {
+      color: var(--primary);
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 40px 0;
+      }
+      .grid-2, .grid-3, .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.2rem;
+      }
     }
   </style>
 </head>
-<body class="selection:bg-emerald-100 selection:text-emerald-900 font-sans antialiased text-zinc-800">
+<body>
 
-  <!-- FLOATING NAVIGATION PILL -->
-  <div class="fixed top-5 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
-    <nav class="pointer-events-auto bg-white/80 backdrop-blur-md border border-zinc-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-5 py-2.5 flex items-center gap-6 text-xs font-semibold text-zinc-600 transition-all">
-      <a href="#top" class="flex items-center gap-2 text-zinc-900 font-bold hover:text-emerald-700 transition-colors">
-        <span class="w-6 h-6 rounded-full bg-zinc-900 text-white flex items-center justify-center text-[11px] font-mono">P</span>
-        <span class="tracking-tight">PRINCE</span>
+  <!-- Navigation -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <img src="assets/images/prince_avatar.png" alt="Prince" class="brand-avatar" onerror="this.style.display='none'">
+        <span>Prince</span>
       </a>
+      <ul class="nav-links">
+        <li><a href="#research">Research</a></li>
+        <li><a href="#projects">Software & Work</a></li>
+        <li><a href="#maps">Maps & Visuals</a></li>
+        <li><a href="#skills">Skills</a></li>
+      </ul>
+      <a href="assets/docs/Prince_Suthar_CV.pdf" class="btn-action" target="_blank">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Download CV
+      </a>
+    </div>
+  </nav>
 
-      <div class="hidden sm:flex items-center gap-5">
-        <a href="#work" class="hover:text-zinc-900 transition-colors">Projects</a>
-        <a href="#research" class="hover:text-zinc-900 transition-colors">Research</a>
-        <a href="#map-section" class="hover:text-zinc-900 transition-colors">Expeditions</a>
-        <a href="#stack" class="hover:text-zinc-900 transition-colors">Stack</a>
-        <a href="#experience" class="hover:text-zinc-900 transition-colors">Experience</a>
-      </div>
-
-      <div class="flex items-center gap-2 pl-2 border-l border-zinc-200">
-        <a href="assets/docs/Prince_Academic_CV_2026.pdf" download="Prince_Academic_CV_2026.pdf" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-semibold transition-all shadow-xs">
-          <i data-lucide="download" class="w-3 h-3"></i>
-          <span>CV</span>
-        </a>
-        <a href="#contact" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-[11px] transition-colors">
-          <span>Connect</span>
-        </a>
-      </div>
-    </nav>
-  </div>
-
-  <main id="top" class="max-w-5xl mx-auto px-5 sm:px-8 pt-28 pb-20 space-y-24">
-
-    <!-- HERO SECTION: MINIMAL, VISUAL, PERSONAL -->
-    <section class="space-y-8 pt-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <!-- Avatar & Status -->
-        <div class="flex items-center gap-4">
-          <div class="relative">
-            <img src="assets/images/avatar.png" alt="Prince" class="w-20 h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-zinc-100">
-            <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white" title="Available for research & consulting"></span>
-          </div>
-          <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">Prince</h1>
-            <p class="text-sm font-medium text-emerald-800 flex items-center gap-1.5 mt-0.5">
-              <span>Spatial Data Science & Earth Observation</span>
-            </p>
-            <p class="text-xs text-zinc-500 font-mono mt-0.5">University of Delhi • New Delhi, India</p>
-          </div>
+  <!-- Hero Section -->
+  <header class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="status-pill">
+          <div class="status-dot"></div>
+          Available for Geospatial Research & High-Impact Consulting
         </div>
-
-        <!-- Quick Social & Contact Badges -->
-        <div class="flex items-center gap-2 self-start sm:self-center">
-          <a href="https://github.com/sutharprin098" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 text-zinc-700 flex items-center justify-center transition-colors shadow-xs" title="GitHub">
-            <i data-lucide="github" class="w-4 h-4"></i>
-          </a>
-          <a href="https://orcid.org/0009-0008-5483-2837" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 text-emerald-700 flex items-center justify-center transition-colors shadow-xs" title="ORCID Verified">
-            <i data-lucide="book-marked" class="w-4 h-4"></i>
-          </a>
-          <a href="mailto:official.princesuthar@gmail.com" class="w-9 h-9 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 text-zinc-700 flex items-center justify-center transition-colors shadow-xs" title="Email">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-          </a>
-          <button onclick="copyEmail()" class="px-3 py-2 rounded-xl bg-white border border-zinc-200 hover:border-zinc-300 text-xs font-mono font-medium text-zinc-700 transition-colors shadow-xs">
-            official.princesuthar@gmail.com
-          </button>
-        </div>
-      </div>
-
-      <!-- Hero Punchline & Short Intro (No long essay!) -->
-      <div class="max-w-3xl space-y-4">
-        <p class="text-xl sm:text-2xl text-zinc-800 font-normal leading-relaxed tracking-tight">
-          Quantitative geographer and systems architect building at the intersection of <strong class="text-zinc-900 font-semibold">satellite telemetry</strong>, <strong class="text-zinc-900 font-semibold">computational terrain science</strong>, and <strong class="text-zinc-900 font-semibold">edge vision AI</strong>.
+        <h1 class="hero-title">
+          Spatial Data Science &<br>
+          <span>Earth Observation</span>
+        </h1>
+        <p class="hero-desc">
+          Undergraduate researcher at the University of Delhi. I bridge computational physical geography, satellite remote sensing (Sentinel-1 SAR / Sentinel-2 Optical), and autonomous spatial software engineering to model climate vulnerability and alpine hazards in the Himalayas.
         </p>
 
-        <div class="flex flex-wrap items-center gap-2 pt-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium border border-zinc-200/80">
-            <i data-lucide="award" class="w-3.5 h-3.5 text-amber-600"></i>
-            Esri India 2026 Selection
-          </span>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium border border-zinc-200/80">
-            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
-            Zenodo Citable DOI Author
-          </span>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium border border-zinc-200/80">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cyan-600"></i>
-            Founder, CamAI
-          </span>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="https://orcid.org/0009-0008-5483-2837" target="_blank" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid var(--card-border);">
+            ORCID: 0009-0008-5483-2837
+          </a>
+          <a href="https://github.com/sutharprin098" target="_blank" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid var(--card-border);">
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/prince-suthar-79552428a/" target="_blank" class="btn-action" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid var(--card-border);">
+            LinkedIn
+          </a>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-card">
+            <div class="metric-num">3,419</div>
+            <div class="metric-label">Settlements Analyzed</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">250+</div>
+            <div class="metric-label">AutoGIS Users / 48h</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">10m</div>
+            <div class="metric-label">Sentinel-2 MSI Res.</div>
+          </div>
         </div>
       </div>
 
-      <!-- Quick Metrics Bento Bar -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-        <div class="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-xs">
-          <div class="text-2xl font-bold font-mono text-zinc-900">3,419</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Settlements Evaluated</div>
-        </div>
-        <div class="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-xs">
-          <div class="text-2xl font-bold font-mono text-emerald-700">10.5281</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Zenodo DOI Published</div>
-        </div>
-        <div class="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-xs">
-          <div class="text-2xl font-bold font-mono text-zinc-900">FP16</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Edge Vision AI Pipeline</div>
-        </div>
-        <div class="p-4 rounded-2xl bg-white border border-zinc-200/80 shadow-xs">
-          <div class="text-2xl font-bold font-mono text-zinc-900">First Class</div>
-          <div class="text-xs text-zinc-500 mt-0.5">DU Geography Research</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURED PROJECTS SECTION (VISUAL CARDS) -->
-    <section id="work" class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Featured Work & Systems</h2>
-          <p class="text-xs text-zinc-500 mt-0.5">Production platforms, spatial engines and open-source software</p>
-        </div>
-
-        <!-- Filter tabs -->
-        <div class="flex items-center gap-1 p-1 bg-zinc-100 rounded-xl text-xs font-medium text-zinc-600" id="filter-bar">
-          <button onclick="filterProjects('all')" class="filter-btn active px-3 py-1 rounded-lg bg-white text-zinc-900 font-semibold shadow-xs">All</button>
-          <button onclick="filterProjects('ai')" class="filter-btn px-3 py-1 rounded-lg hover:text-zinc-900">AI / Vision</button>
-          <button onclick="filterProjects('gis')" class="filter-btn px-3 py-1 rounded-lg hover:text-zinc-900">GIS & Siting</button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- PROJECT 1: CamAI Platform -->
-        <div class="project-card group rounded-2xl bg-white border border-zinc-200 hover:border-zinc-300 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between" data-category="ai">
-          <div>
-            <div class="h-52 bg-zinc-100 overflow-hidden relative border-b border-zinc-100">
-              <img src="assets/images/camai_preview.png" alt="CamAI Interface" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[11px] font-mono font-bold text-emerald-800 shadow-xs border border-zinc-200">
-                Live Platform
-              </span>
-            </div>
-            <div class="p-6 space-y-3">
-              <div class="flex items-center justify-between">
-                <h3 class="text-lg font-bold text-zinc-900">CamAI — Visual Intelligence Ecosystem</h3>
-                <span class="text-xs font-mono text-zinc-400">2026</span>
-              </div>
-              <p class="text-xs text-zinc-600 leading-relaxed">
-                End-to-end edge surveillance and real-time vision telemetry platform. Powered by TensorRT FP16, ByteTrack Re-ID, and FastAPI microservices. Currently in enterprise negotiations.
-              </p>
-              <div class="flex flex-wrap gap-1.5 pt-1">
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">TensorRT FP16</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">FastAPI</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">ByteTrack</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">Electron TS</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-6 pt-0 flex items-center justify-between border-t border-zinc-100 mt-4">
-            <a href="https://camai.princesite.in" target="_blank" rel="noopener" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5">
-              <span>Open camai.princesite.in</span>
-              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-            </a>
-            <a href="https://github.com/sutharprin098/camai-releases" target="_blank" rel="noopener" class="text-xs text-zinc-500 hover:text-zinc-900 flex items-center gap-1">
-              <i data-lucide="github" class="w-3.5 h-3.5"></i>
-              <span>Releases</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- PROJECT 2: Post-Mining Solar Reclamation -->
-        <div class="project-card group rounded-2xl bg-white border border-zinc-200 hover:border-zinc-300 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between" data-category="gis">
-          <div>
-            <div class="h-52 bg-gradient-to-br from-amber-50 to-emerald-50/50 p-6 flex flex-col justify-center items-center text-center relative border-b border-zinc-100">
-              <div class="w-12 h-12 rounded-2xl bg-white shadow-xs border border-zinc-200 flex items-center justify-center text-amber-600 mb-2">
-                <i data-lucide="sun" class="w-6 h-6"></i>
-              </div>
-              <div class="font-bold text-zinc-800 text-sm">3D Terrain & Solar PV Suitability</div>
-              <div class="text-xs text-zinc-500 font-mono mt-0.5">Open-Cast Mine Decommissioning • GHI Yield</div>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[11px] font-mono font-bold text-amber-800 shadow-xs border border-zinc-200">
-                Active Client
-              </span>
-            </div>
-            <div class="p-6 space-y-3">
-              <div class="flex items-center justify-between">
-                <h3 class="text-lg font-bold text-zinc-900">Brownfield-to-Solar PV Reclamation</h3>
-                <span class="text-xs font-mono text-zinc-400">2025–Present</span>
-              </div>
-              <p class="text-xs text-zinc-600 leading-relaxed">
-                3D terrain and techno-economic suitability modeling to repurpose a decommissioning open-cast mine into a utility-scale solar park. Slope/aspect masking (&lt; 5°), shadow analysis, and GHI yield calculations.
-              </p>
-              <div class="flex flex-wrap gap-1.5 pt-1">
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">DEM Slope Masking</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">GHI Irradiance</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">MW Sizing</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-6 pt-0 flex items-center justify-between border-t border-zinc-100 mt-4">
-            <span class="text-xs font-semibold text-zinc-800">Techno-Economic Spatial Modeling</span>
-            <span class="text-xs text-zinc-400 font-mono">Client-Facing</span>
-          </div>
-        </div>
-
-        <!-- PROJECT 3: AutoGIS Studio -->
-        <div class="project-card group rounded-2xl bg-white border border-zinc-200 hover:border-zinc-300 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between" data-category="gis">
-          <div>
-            <div class="p-6 space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span class="text-xs font-mono font-bold text-zinc-500 uppercase">Open Source QGIS</span>
-                </div>
-                <span class="text-xs font-mono text-zinc-400">Oct 2026</span>
-              </div>
-              <h3 class="text-lg font-bold text-zinc-900">AutoGIS Studio — Autonomous Desktop AI</h3>
-              <p class="text-xs text-zinc-600 leading-relaxed">
-                PyQGIS-powered AI desktop assistant for QGIS. Translates natural language prompts into automated spatial queries, layer styling, and satellite data retrieval. Multi-LLM provider support.
-              </p>
-              <div class="flex flex-wrap gap-1.5 pt-1">
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">PyQGIS</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">Python</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">OSM Retrieval</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">MIT</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-6 pt-0 flex items-center justify-between border-t border-zinc-100 mt-4">
-            <a href="https://github.com/sutharprin098/AutoGIS" target="_blank" rel="noopener" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1">
-              <span>View on GitHub</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            </a>
-            <span class="text-xs text-zinc-400 font-mono">AutoGIS Studio</span>
-          </div>
-        </div>
-
-        <!-- PROJECT 4: GeoLibre India GIS Plugin -->
-        <div class="project-card group rounded-2xl bg-white border border-zinc-200 hover:border-zinc-300 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between" data-category="gis">
-          <div>
-            <div class="p-6 space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                  <span class="text-xs font-mono font-bold text-zinc-500 uppercase">8.3k+ Star Ecosystem</span>
-                </div>
-                <span class="text-xs font-mono text-zinc-400">Merged PR</span>
-              </div>
-              <h3 class="text-lg font-bold text-zinc-900">GeoLibre India GIS Plugin</h3>
-              <p class="text-xs text-zinc-600 leading-relaxed">
-                Core open-source contribution enabling regional dataset search, automated boundary ingestion, and India-specific spatial queries in the Tauri v2 + React desktop GIS stack.
-              </p>
-              <div class="flex flex-wrap gap-1.5 pt-1">
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">Tauri v2</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">TypeScript</span>
-                <span class="px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[11px] font-mono">MapLibre GL</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-6 pt-0 flex items-center justify-between border-t border-zinc-100 mt-4">
-            <a href="https://github.com/sutharprin098/GeoLibre" target="_blank" rel="noopener" class="text-xs font-semibold text-zinc-800 hover:text-zinc-950 flex items-center gap-1">
-              <span>GitHub Contribution</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            </a>
-            <span class="text-xs text-zinc-400 font-mono">Tauri v2 + React</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- RESEARCH & PUBLICATIONS SECTION -->
-    <section id="research" class="space-y-6">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Peer-Reviewed & Empirical Research</h2>
-          <p class="text-xs text-zinc-500 mt-0.5">Himalayan hazard modeling, satellite remote sensing and GLOF dynamics</p>
-        </div>
-        <span class="text-xs font-mono text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 font-semibold">
-          Open Science
-        </span>
-      </div>
-
-      <div class="space-y-4">
-        
-        <!-- PAPER 1 -->
-        <div class="p-6 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-            <div class="space-y-1 max-w-2xl">
-              <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-mono text-[11px] font-bold border border-emerald-200">Zenodo DOI: 10.5281/zenodo.23670659</span>
-                <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-800 font-mono text-[11px] font-semibold border border-amber-200">Esri India 2026</span>
-              </div>
-              <h3 class="text-base sm:text-lg font-bold text-zinc-900">
-                Community Isolation Risk along the NH-7 Himalayan Transport Corridor
-              </h3>
-              <p class="text-xs text-zinc-500">
-                <strong class="text-zinc-800">Prince</strong> (Lead Spatial Researcher) • Department of Geography, University of Delhi • Sept 2026
-              </p>
-            </div>
-
-            <div class="flex items-center gap-2 shrink-0">
-              <a href="https://doi.org/10.5281/zenodo.23670659" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold transition-colors">
-                Zenodo Record
-              </a>
-              <a href="assets/docs/NH7_Himalayan_Isolation_Risk_Assessment.pdf" download class="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-medium transition-colors">
-                PDF Paper
-              </a>
-            </div>
-          </div>
-
-          <p class="text-xs text-zinc-600 leading-relaxed">
-            Evaluated accessibility exposure across <strong>3,419 settlements</strong> within a 15 km NH-7 buffer. Multi-criteria framework: Road Accessibility (46.91%), Healthcare Proximity (20.10%), NH-7 Proximity (20.10%), Slope (8.62%), Elevation (4.27%). Validated with in-situ hazard ground-truthing in Rudraprayag (Mastura landslide corridor).
-          </p>
-        </div>
-
-        <!-- PAPER 2: GLOF DISSERTATION WITH FIGURES -->
-        <div class="p-6 rounded-2xl bg-white border border-zinc-200 shadow-xs hover:border-zinc-300 transition-colors space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-            <div class="space-y-1 max-w-2xl">
-              <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-cyan-50 text-cyan-800 font-mono text-[11px] font-bold border border-cyan-200">Ongoing Thesis</span>
-                <span class="text-xs font-mono text-zinc-400">Nepal Himalayas</span>
-              </div>
-              <h3 class="text-base sm:text-lg font-bold text-zinc-900">
-                Nepal Glacial Lake Outburst Flood (GLOF) Early Warning & AI Dynamics
-              </h3>
-              <p class="text-xs text-zinc-500">
-                <strong class="text-zinc-800">Prince</strong> • Advising Faculty: Department of Geography, University of Delhi
-              </p>
-            </div>
-          </div>
-
-          <p class="text-xs text-zinc-600 leading-relaxed">
-            Multi-temporal satellite pipeline combining <strong>Sentinel-1 SAR</strong> (VV/VH polarizations) and <strong>Sentinel-2 optical</strong> (NDWI/MNDWI) with deep learning segmentation to track moraine-dammed lake expansions.
-          </p>
-
-          <!-- Visual Figures Thumbnails -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
-            <div class="group rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 cursor-pointer" onclick="openLightbox('assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png', 'Gepang Gath 3D Volume Growth')">
-              <img src="assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png" alt="3D Growth" class="w-full h-24 object-cover group-hover:scale-105 transition-transform">
-              <div class="p-2 text-[10px] font-mono text-zinc-600 truncate">3D Volume Simulation</div>
-            </div>
-            <div class="group rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 cursor-pointer" onclick="openLightbox('assets/images/Figure_4_2_Flood_Routing_Arrival_Times.png', 'Flood Routing Arrival Times')">
-              <img src="assets/images/Figure_4_2_Flood_Routing_Arrival_Times.png" alt="Flood Routing" class="w-full h-24 object-cover group-hover:scale-105 transition-transform">
-              <div class="p-2 text-[10px] font-mono text-zinc-600 truncate">Flood Routing Times</div>
-            </div>
-            <div class="group rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 cursor-pointer" onclick="openLightbox('assets/images/Figure_4_5_AI_Lake_Detection_Inference.png', 'AI Lake Detection Inference')">
-              <img src="assets/images/Figure_4_5_AI_Lake_Detection_Inference.png" alt="AI Lake Inference" class="w-full h-24 object-cover group-hover:scale-105 transition-transform">
-              <div class="p-2 text-[10px] font-mono text-zinc-600 truncate">U-Net Lake Inference</div>
-            </div>
-            <div class="group rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 cursor-pointer" onclick="openLightbox('assets/images/Figure_4_7_ROC_Curves_Glacial_Lakes.png', 'ROC Curves Validation')">
-              <img src="assets/images/Figure_4_7_ROC_Curves_Glacial_Lakes.png" alt="ROC Curves" class="w-full h-24 object-cover group-hover:scale-105 transition-transform">
-              <div class="p-2 text-[10px] font-mono text-zinc-600 truncate">ROC Curve Validation</div>
+      <div class="hero-image-wrap">
+        <div class="hero-photo-card">
+          <img src="assets/images/prince_photo.png" alt="Prince" class="hero-photo">
+          <div class="floating-badge">
+            <svg width="20" height="20" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <div style="color: #fff; font-size: 0.85rem;">Esri UC 2026 Selection</div>
+              <div style="color: var(--text-muted); font-size: 0.72rem;">National Map Gallery Showcase</div>
             </div>
           </div>
         </div>
-
-      </div>
-    </section>
-
-    <!-- INTERACTIVE EXPEDITIONS MAP (COMPACT & CLEAN) -->
-    <section id="map-section" class="space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Expeditions & Fieldwork Stations</h2>
-          <p class="text-xs text-zinc-500 mt-0.5">Click pins on the map to view in-situ ground-truthing and field sampling stations</p>
-        </div>
-      </div>
-
-      <div class="rounded-2xl overflow-hidden border border-zinc-200 shadow-xs h-72 w-full relative">
-        <div id="clean-map" class="w-full h-full"></div>
-      </div>
-    </section>
-
-    <!-- TECHNICAL TOOLKIT & SKILLS -->
-    <section id="stack" class="space-y-6">
-      <div>
-        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Skills & Technical Stack</h2>
-        <p class="text-xs text-zinc-500 mt-0.5">Technologies and workflows used in daily research and system synthesis</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        <div class="p-5 rounded-2xl bg-white border border-zinc-200 space-y-3">
-          <div class="text-xs font-mono font-bold text-emerald-800 uppercase flex items-center gap-1.5">
-            <i data-lucide="satellite" class="w-4 h-4"></i>
-            <span>Satellite & GIS</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5">
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Copernicus DEM</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Sentinel-1 SAR</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Sentinel-2 Optical</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">ArcGIS Pro</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">QGIS / PyQGIS</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Earth Engine</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">GDAL / GeoPandas</span>
-          </div>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-white border border-zinc-200 space-y-3">
-          <div class="text-xs font-mono font-bold text-cyan-800 uppercase flex items-center gap-1.5">
-            <i data-lucide="cpu" class="w-4 h-4"></i>
-            <span>Vision & AI Systems</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5">
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">TensorRT FP16</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">ByteTrack Re-ID</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">FastAPI</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Python</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">React / TypeScript</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Electron Desktop</span>
-          </div>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-white border border-zinc-200 space-y-3">
-          <div class="text-xs font-mono font-bold text-amber-800 uppercase flex items-center gap-1.5">
-            <i data-lucide="compass" class="w-4 h-4"></i>
-            <span>Spatial Modeling</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5">
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">AHP Multi-Criteria</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">3D Terrain Relief</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Solar PV Siting</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">GHI Modeling</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">Isochrone Catchments</span>
-            <span class="px-2.5 py-1 rounded-lg bg-zinc-100 text-xs font-medium text-zinc-700">GPS Ground-Truthing</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- EXPERIENCE & EDUCATION (MINIMAL TIMELINE) -->
-    <section id="experience" class="space-y-6">
-      <div>
-        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Timeline & Education</h2>
-        <p class="text-xs text-zinc-500 mt-0.5">Professional trajectory and academic credentials</p>
-      </div>
-
-      <div class="border-l border-zinc-200 pl-6 space-y-8 ml-3">
-        
-        <!-- Role 1 -->
-        <div class="relative space-y-1">
-          <span class="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-emerald-600 ring-4 ring-white"></span>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs">
-            <span class="font-bold text-zinc-900 text-sm">Founder & Chief Systems Architect — CamAI</span>
-            <span class="font-mono text-zinc-400">Jul 2026 – Present</span>
-          </div>
-          <p class="text-xs text-zinc-600">
-            Engineered real-time vision platform (TensorRT FP16, ByteTrack Re-ID, FastAPI). Currently in enterprise negotiations.
-          </p>
-        </div>
-
-        <!-- Role 2 -->
-        <div class="relative space-y-1">
-          <span class="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 ring-4 ring-white"></span>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs">
-            <span class="font-bold text-zinc-900 text-sm">Lead Geospatial Consultant — Independent</span>
-            <span class="font-mono text-zinc-400">Jan 2025 – Present</span>
-          </div>
-          <p class="text-xs text-zinc-600">
-            3D terrain suitability and GHI solar modeling for open-cast mine decommissioning; 20+ layer MCDM for Pune utility solar; emergency health isochrones in Ludhiana.
-          </p>
-        </div>
-
-        <!-- Role 3 -->
-        <div class="relative space-y-1">
-          <span class="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 ring-4 ring-white"></span>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs">
-            <span class="font-bold text-zinc-900 text-sm">GIS Analyst — Carbon X Services Pvt. Ltd.</span>
-            <span class="font-mono text-zinc-400">Mar 2026 – Jun 2026</span>
-          </div>
-          <p class="text-xs text-zinc-600">
-            Biomass carbon sequestration modeling and multi-temporal satellite ETL pipelines.
-          </p>
-        </div>
-
-        <!-- Education -->
-        <div class="relative space-y-1">
-          <span class="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-900 ring-4 ring-white"></span>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs">
-            <span class="font-bold text-zinc-900 text-sm">BA (Hons.) Geography with Research — University of Delhi</span>
-            <span class="font-mono text-zinc-400">Expected July 2027</span>
-          </div>
-          <p class="text-xs text-zinc-600">
-            Dr. Bhim Rao Ambedkar College. First Class Standing. Core modules: Remote Sensing & GIS, Geostatistics, Cartography, Geomorphology.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="p-8 sm:p-10 rounded-3xl bg-zinc-900 text-white space-y-6">
-      <div class="max-w-2xl space-y-2">
-        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Let's Connect</h2>
-        <p class="text-xs sm:text-sm text-zinc-300">
-          Open to graduate research, geodata science collaborations, and strategic spatial AI consulting.
-        </p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-3 pt-2">
-        <a href="mailto:official.princesuthar@gmail.com" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors flex items-center gap-2">
-          <i data-lucide="mail" class="w-4 h-4"></i>
-          <span>Send Email</span>
-        </a>
-        <a href="tel:+919509706699" class="px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs transition-colors flex items-center gap-2">
-          <i data-lucide="phone" class="w-4 h-4"></i>
-          <span>+91-9509706699</span>
-        </a>
-        <a href="https://orcid.org/0009-0008-5483-2837" target="_blank" rel="noopener" class="px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs transition-colors flex items-center gap-2">
-          <i data-lucide="external-link" class="w-4 h-4"></i>
-          <span>ORCID Profile</span>
-        </a>
-        <a href="assets/docs/Prince_Academic_CV_2026.pdf" download class="px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs transition-colors flex items-center gap-2">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Download CV</span>
-        </a>
-      </div>
-
-      <div class="pt-6 border-t border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-zinc-500 font-mono gap-2">
-        <span>© 2026 Prince • Built for princesite.in</span>
-        <a href="#top" class="hover:text-white transition-colors">Back to top ↑</a>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- LIGHTBOX MODAL -->
-  <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col">
-      <div class="p-3 border-b border-zinc-200 flex items-center justify-between bg-zinc-50 text-xs font-bold text-zinc-800">
-        <span id="lightbox-title">Research Figure</span>
-        <button onclick="closeLightbox()" class="w-7 h-7 rounded-lg bg-zinc-200 hover:bg-zinc-300 flex items-center justify-center text-zinc-700">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-      <div class="p-4 bg-zinc-100 flex items-center justify-center">
-        <img id="lightbox-img" src="" alt="Enlarged figure" class="max-h-[65vh] w-auto rounded-lg">
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white text-xs font-mono px-4 py-2.5 rounded-xl shadow-xl border border-zinc-700 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
-    <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-    <span id="toast-msg">Copied!</span>
-  </div>
+  <!-- Research & Publications Section -->
+  <section id="research" class="container">
+    <div class="section-head">
+      <div class="section-tag">Scientific Inquiries</div>
+      <h2 class="section-title">Research & Publications</h2>
+    </div>
 
-  <script>
-    lucide.createIcons();
+    <div class="grid-2">
+      <!-- Project 1: GLOF Thesis -->
+      <div class="card">
+        <img src="assets/images/Figure_4_1_Gepang_Gath_3D_Volume_Growth.png" alt="GLOF Research" class="card-thumb" onerror="this.src='assets/images/Chandra_3_Lakes_Decadal_Expansion_Analysis.png'">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Sentinel-1 SAR</span>
+            <span class="tag">Sentinel-2 Optical</span>
+            <span class="tag">GLOF Hydrodynamics</span>
+            <span class="tag">Thesis</span>
+          </div>
+          <h3 class="card-title">AI-Based Monitoring & GLOF Risk in Chandra Basin, Himalayas</h3>
+          <p class="card-desc">
+            Reconstructed 34-year decadal lake expansion (1990–2024) across benchmark proglacial lakes (Samudra Tapu: 161.9 ha; Gepang Gath: 104.5 ha) fusing multi-temporal Landsat 5/7/8 and Sentinel-2 (10m) water indices. Modeled 3D bathymetric water storage (30.7M–55.5M m³) and Froehlich dam-breach peak outflow (Qp = 8,093–12,108 m³/s) to simulate downstream arrival times at Sissu Village and Atal Tunnel corridor (NH-3).
+          </p>
+          <div class="card-links">
+            <span style="color: var(--emerald); font-size: 0.85rem; font-weight: 600;">Status: Ongoing Dissertation (DU)</span>
+          </div>
+        </div>
+      </div>
 
-    // Copy email helper
-    function copyEmail() {
-      navigator.clipboard.writeText('official.princesuthar@gmail.com').then(() => {
-        const toast = document.getElementById('toast');
-        document.getElementById('toast-msg').textContent = 'Email copied!';
-        toast.classList.remove('translate-y-20', 'opacity-0');
-        setTimeout(() => {
-          toast.classList.add('translate-y-20', 'opacity-0');
-        }, 2500);
-      });
-    }
+      <!-- Project 2: NH-7 Accessibility -->
+      <div class="card">
+        <img src="assets/images/Sentinel2_Full_Basin_Master_Glacial_Lakes_Map.png" alt="NH-7 Accessibility" class="card-thumb" onerror="this.src='assets/images/Chandra_Basin_3_Real_Major_Glacial_Lakes.png'">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">CERN / Zenodo DOI</span>
+            <span class="tag">AHP MCDM</span>
+            <span class="tag">Copernicus DEM</span>
+            <span class="tag">Esri UC 2026</span>
+          </div>
+          <h3 class="card-title">Community Isolation Risk Along NH-7 Transport Corridor</h3>
+          <p class="card-desc">
+            Formulated an independent spatial gravity model evaluating village accessibility exposure across 3,419 rural settlements in Uttarakhand. Integrated Copernicus GLO-30 DEM, OpenStreetMap networks, and in-situ GPS hazard ground-truthing in Rudraprayag (Mastura landslide corridor).
+          </p>
+          <div class="card-links">
+            <a href="https://zenodo.org/records/23670659" target="_blank" class="card-link">
+              View Zenodo DOI: 10.5281/zenodo.23670659 &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    // Project filtering
-    function filterProjects(cat) {
-      const cards = document.querySelectorAll('.project-card');
-      const btns = document.querySelectorAll('.filter-btn');
-      
-      btns.forEach(b => {
-        b.className = 'filter-btn px-3 py-1 rounded-lg hover:text-zinc-900';
-      });
-      event.target.className = 'filter-btn active px-3 py-1 rounded-lg bg-white text-zinc-900 font-semibold shadow-xs';
+  <!-- Software Engineering & Industry Consulting -->
+  <section id="projects" class="container">
+    <div class="section-head">
+      <div class="section-tag">Engineering & Industry</div>
+      <h2 class="section-title">Software Systems & Consulting</h2>
+    </div>
 
-      cards.forEach(card => {
-        if (cat === 'all' || card.getAttribute('data-category') === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
+    <div class="grid-3">
+      <!-- AutoGIS -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">QGIS Official Repo</span>
+            <span class="tag">Python / PyQGIS</span>
+            <span class="tag">GEE</span>
+          </div>
+          <h3 class="card-title">AutoGIS (Plugin ID: 6782)</h3>
+          <p class="card-desc">
+            Autonomous geospatial AI plugin with 39 spatial tools in QGIS Desktop. Connected to Google Earth Engine and live OSM streaming, achieving 250+ community downloads in 48 hours.
+          </p>
+          <div class="card-links">
+            <a href="https://autogis.princesite.in" target="_blank" class="card-link">Live Portal &rarr;</a>
+          </div>
+        </div>
+      </div>
 
-    // Lightbox
-    function openLightbox(src, title) {
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox-title').textContent = title;
-      const modal = document.getElementById('lightbox-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-    function closeLightbox() {
-      const modal = document.getElementById('lightbox-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
+      <!-- CamAI -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">TensorRT FP16</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">ByteTrack Re-ID</span>
+          </div>
+          <h3 class="card-title">CamAI Vision Ecosystem</h3>
+          <p class="card-desc">
+            Engineered real-time edge vision intelligence platform for intelligent spatial telemetry, live multi-camera tracking, and inference pipelines.
+          </p>
+          <div class="card-links">
+            <a href="https://camai.princesite.in" target="_blank" class="card-link">Visit CamAI &rarr;</a>
+          </div>
+        </div>
+      </div>
 
-    // Clean interactive Leaflet map
-    window.addEventListener('DOMContentLoaded', () => {
-      const map = L.map('clean-map', { scrollWheelZoom: false }).setView([28.6, 77.2], 5);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 18
-      }).addTo(map);
+      <!-- Carbon X & Solar Consulting -->
+      <div class="card">
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">Industry GIS</span>
+            <span class="tag">CCUS Suitability</span>
+            <span class="tag">Solar MCDM</span>
+          </div>
+          <h3 class="card-title">Geospatial Consultancy</h3>
+          <p class="card-desc">
+            Modeled Carbon Capture and Storage (CCS) geological injection zones at Carbon X Services. Delivered solar farm suitability on decommissioned coal mines and healthcare isochrones in Ludhiana.
+          </p>
+          <div class="card-links">
+            <span style="color: var(--primary); font-size: 0.85rem; font-weight: 600;">Client-Facing / Industry</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      const stations = [
-        { name: "Rudraprayag (NH-7 Landslide Ground-Truthing)", coords: [30.2858, 78.9822] },
-        { name: "Gepang Gath Glacial Lake (GLOF Catchment)", coords: [32.4812, 77.2154] },
-        { name: "Jaisalmer (Arid Demographic Survey)", coords: [26.9157, 70.9083] },
-        { name: "University of Delhi (Geography Lab Base)", coords: [28.6139, 77.2090] },
-        { name: "Korba (Mine Solar PV Siting)", coords: [22.3142, 82.6841] },
-        { name: "Pune (Utility Solar MCDM)", coords: [18.5204, 73.8567] }
-      ];
+  <!-- Technical Maps Gallery -->
+  <section id="maps" class="container">
+    <div class="section-head">
+      <div class="section-tag">Cartography & Spatial Analytics</div>
+      <h2 class="section-title">Technical Maps & Visualizations</h2>
+    </div>
 
-      const pinIcon = L.divIcon({
-        className: 'clean-pin',
-        html: `<div style="background-color: #16A34A; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 1px 4px rgba(0,0,0,0.3);"></div>`,
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
+    <div class="grid-3">
+      <div class="card">
+        <img src="assets/images/Chandra_3_Lakes_Dam_Breach_and_Peak_Discharge.png" alt="Dam Breach Simulation" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">Dam Breach Hydrodynamics</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Simulated hydrographs & peak outflow for Gepang Gath & Samudra Tapu.</p>
+        </div>
+      </div>
 
-      stations.forEach(st => {
-        L.marker(st.coords, { icon: pinIcon }).addTo(map).bindPopup(`<strong>${st.name}</strong>`);
-      });
-    });
-  </script>
+      <div class="card">
+        <img src="assets/images/Chandra_3_Lakes_Bathymetry_and_Volume_Analysis.png" alt="Bathymetry Modeling" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">3D Bathymetry & Volume</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Multi-model stage-storage volume curves using Copernicus 30m DEM.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="assets/images/Sentinel2_10m_Satellite_Imagery_Verification.png" alt="Sentinel-2 Verification" class="card-thumb">
+        <div class="card-body" style="padding: 16px;">
+          <h4 style="font-size: 1rem; margin-bottom: 4px;">Sentinel-2 Multi-Spectral Verification</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">False-color composite & high-altitude glacial lake boundary calibration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills & Competencies -->
+  <section id="skills" class="container">
+    <div class="section-head">
+      <div class="section-tag">Capabilities</div>
+      <h2 class="section-title">Technical & Spatial Skills</h2>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-box">
+        <div class="skill-cat"><span>01.</span> Earth Observation</div>
+        <div class="skill-pills">
+          <div class="skill-pill">Sentinel-1 SAR</div>
+          <div class="skill-pill">Sentinel-2 Optical</div>
+          <div class="skill-pill">Landsat 5/7/8/9</div>
+          <div class="skill-pill">Copernicus DEM</div>
+          <div class="skill-pill">Google Earth Engine</div>
+          <div class="skill-pill">ESA SNAP</div>
+        </div>
+      </div>
+
+      <div class="skill-box">
+        <div class="skill-cat"><span>02.</span> Spatial Data Science</div>
+        <div class="skill-pills">
+          <div class="skill-pill">Python</div>
+          <div class="skill-pill">GDAL / OGR</div>
+          <div class="skill-pill">GeoPandas</div>
+          <div class="skill-pill">Rasterio</div>
+          <div class="skill-pill">PyQGIS</div>
+          <div class="skill-pill">AHP MCDM</div>
+        </div>
+      </div>
+
+      <div class="skill-box">
+        <div class="skill-cat"><span>03.</span> AI & Systems</div>
+        <div class="skill-pills">
+          <div class="skill-pill">TensorRT FP16</div>
+          <div class="skill-pill">ByteTrack</div>
+          <div class="skill-pill">FastAPI</div>
+          <div class="skill-pill">TypeScript</div>
+          <div class="skill-pill">Docker</div>
+          <div class="skill-pill">FastMCP</div>
+        </div>
+      </div>
+
+      <div class="skill-box">
+        <div class="skill-cat"><span>04.</span> Open Science & Field</div>
+        <div class="skill-pills">
+          <div class="skill-pill">CERN/Zenodo</div>
+          <div class="skill-pill">ORCID</div>
+          <div class="skill-pill">In-Situ GPS</div>
+          <div class="skill-pill">Himalayan Hazard</div>
+          <div class="skill-pill">ICMR Exposure</div>
+          <div class="skill-pill">QGIS Plugins</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="mailto:official.princesuthar@gmail.com">Email</a>
+        <a href="https://orcid.org/0009-0008-5483-2837" target="_blank">ORCID</a>
+        <a href="https://github.com/sutharprin098" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/prince-suthar-79552428a/" target="_blank">LinkedIn</a>
+        <a href="https://zenodo.org/records/23670659" target="_blank">Zenodo DOI</a>
+      </div>
+      <p>&copy; 2026 Prince. All rights reserved. Built with precision for Earth Observation & Spatial Science.</p>
+    </div>
+  </footer>
+
 </body>
 </html>
